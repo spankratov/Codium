@@ -1,0 +1,27 @@
+{
+  "name": "backend_dev",
+  "homepage": "https://github.com/spankratov/backend_dev",
+  "authors": [
+    "KirovVerst <kirov.verst@gmail.com>"
+  ],
+  "description": "somedescription",
+  "main": "",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.7",
+    "angular-route": "~1.4.7",
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4",
+    "angular-resource": "1.4.x"
+  }
+}

@@ -19,7 +19,6 @@ from hvad.models import TranslatableModel, TranslatedFields
 # TODO: validator for all models
 # TODO: representation of 'affects' and 'requirements' fields
 # TODO: somehow represent version of database
-# TODO: client database
 
 class Attribute(TranslatableModel):
     """

@@ -58,3 +58,9 @@ target/
 
 # PyCharm
 .idea/
+
+# bash-scripts
+*.bash
+
+# venv
+/venv/

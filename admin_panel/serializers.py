@@ -8,7 +8,7 @@ from userdata.models import Character
 class AttributeSerializer(HyperlinkedTranslatableModelSerializer):
     class Meta:
         model = Attribute
-        fields = ('url', 'id', 'name', 'short_name', 'min_value', 'max_value', 'language_code')
+        fields = ('url', 'id', 'name', 'short_name', 'default', 'min_value', 'max_value', 'language_code')
 
 
 class EventSerializer(HyperlinkedTranslatableModelSerializer):
@@ -22,21 +22,21 @@ class ActionSerializer(HyperlinkedTranslatableModelSerializer):
     class Meta:
         model = Action
         fields = (
-            'url', 'id', 'name', 'description', 'type,' 'short_name', 'affects', 'requirements', 'language_code')
+            'url', 'id', 'name', 'description', 'type', 'short_name', 'affects', 'requirements', 'language_code')
 
 
 class PropertySerializer(HyperlinkedTranslatableModelSerializer):
     class Meta:
         model = Property
         fields = (
-            'url', 'id', 'name', 'description', 'type,' 'short_name', 'cost', 'language_code')
+            'url', 'id', 'name', 'description', 'type', 'short_name', 'cost', 'language_code')
 
 
 class UniversitySerializer(HyperlinkedTranslatableModelSerializer):
     class Meta:
         model = University
         fields = (
-            'url', 'id', 'name', 'description', 'short_name', 'cost', 'affects', 'requirements', 'language_code')
+            'url', 'id', 'name', 'description', 'short_name', 'affects', 'requirements', 'language_code')
 
 
 class ProjectSerializer(HyperlinkedTranslatableModelSerializer):

@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'hvad',
     'rest_framework',
+    'rest_framework_swagger',
     'admin_panel',
     'content',
     'sync',
@@ -134,3 +135,21 @@ JWT_AUTH = {
 }
 
 APPEND_SLASH = True
+
+'''
+SWAGGER_SETTINGS = {
+    'api_version': '1.0',
+    'enabled_methods': [
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete'
+    ],
+    'info': {
+        'contact': 'chloe3311@gmail.com.com',
+        'description': 'Документация API синхронизационного сервера мобильной игры Codium.',
+        'title': 'Codium Admin Panel API',
+    },
+}
+'''

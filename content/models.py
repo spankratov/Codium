@@ -34,7 +34,7 @@ class Attribute(TranslatableModel):
         name=models.CharField(max_length=50)
     )
     short_name = models.SlugField(unique=True)
-    default = models.IntegerField(default=None)
+    default = models.IntegerField()
     min_value = models.IntegerField(null=True, blank=True)
     max_value = models.IntegerField(null=True, blank=True)
 

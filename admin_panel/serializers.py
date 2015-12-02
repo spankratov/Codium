@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, validators
 from hvad.contrib.restframework import HyperlinkedTranslatableModelSerializer
 from content.models import Attribute, Event, Action, Property, University, Project, Job
 from django.contrib.auth.models import User
@@ -40,11 +40,13 @@ class UniversitySerializer(HyperlinkedTranslatableModelSerializer):
 
 
 class ProjectSerializer(HyperlinkedTranslatableModelSerializer):
+
     class Meta:
         model = Project
         fields = (
             'url', 'id', 'description', 'type', 'short_name', 'affects', 'requirements', 'time_spending',
             'language_code')
+
 
 
 class JobSerializer(HyperlinkedTranslatableModelSerializer):

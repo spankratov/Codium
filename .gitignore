@@ -62,6 +62,6 @@ target/
 *.bash
 
 # venv
-/venv/
+/venv3/
 
 

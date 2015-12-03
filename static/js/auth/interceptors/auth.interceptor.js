@@ -13,6 +13,7 @@
 
 					if (token) {
 						config.headers['Authorization'] = 'JWT ' + token;
+						config.headers['Accept-Language'] = 'ru';
 					}
 					return config;
 				},

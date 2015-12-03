@@ -8,7 +8,7 @@
         <th>Requirements</th>
         <th></th>
     </tr>
-    <tr ng-repeat="action in vm.actions">
+    <tr ng-repeat="action in vm.actions track by $index">
         <td>{{ action.name }}</td>
         <td>{{ action.description }}</td>
         <td>{{ action.type }}</td>
@@ -16,8 +16,10 @@
         <td>{{ action.affects }}</td>
         <td>{{ action.requirements }}</td>
         <td>
-            <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-edit"></span></button>
-            <button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></span>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.setCurrentAction(action)"><span
+                    class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.deleteAction($index)"><span
+                    class="glyphicon glyphicon-remove"></span>
             </button>
         </td>
     </tr>

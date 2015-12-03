@@ -12,6 +12,8 @@
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/auth/login.html'
             }).when('/actions', {
+                controller: 'ActionsController',
+                controllerAs: 'vm',
                 templateUrl: '/static/templates/actions/index.html'
             }).otherwise({
                 redirectTo: '/'

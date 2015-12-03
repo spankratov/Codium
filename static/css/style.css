@@ -1,3 +1,19 @@
 nav {
     background-color: lightgray;
 }
+
+.right-part {
+    z-index: 1000;
+    position: fixed;
+    top: 40px;
+    right: 0;
+    background-color: #c4e3f3;
+    padding-top: 15px;
+}
+.right-part h2 {
+    margin-top: 0;
+}
+
+.right-part span:hover {
+    cursor: pointer;
+}

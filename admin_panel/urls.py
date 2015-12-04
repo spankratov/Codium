@@ -10,6 +10,7 @@ router.register(r'properties', views.PropertyViewSet)
 router.register(r'universities', views.UniversityViewSet)
 router.register(r'projects', views.ProjectViewSet)
 router.register(r'jobs', views.JobViewSet)
+router.register(r'knowledges', views.KnowledgeViewSet)
 router.register(r'characters', views.CharacterViewSet)
 router.register(r'users', views.UserViewSet)
 

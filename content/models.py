@@ -199,4 +199,4 @@ class Knowledge(TranslatableModel):
     )
     short_name = models.SlugField(unique=True)
     requirements = models.CharField(max_length=500)
-    edges = models.ManyToManyField('self', symmetrical=False)
+    children = models.ManyToManyField('self', symmetrical=False, related_name='parents')

@@ -1,12 +1,9 @@
-/**
- * Created by Kirov on 19/11/15.
- */
 (function () {
     'use strict';
 
-    angular.module('application.actions.services').
-    factory('Actions', function ($resource) {
-        return $resource('api/v1/actions/:actionId/', null,
+    angular.module('application.attributes.services').
+    factory('Attributes', function ($resource) {
+        return $resource('api/v1/attributes/:attributeId/', null,
             {
                 'update': {method: 'PUT'},
                 query: {

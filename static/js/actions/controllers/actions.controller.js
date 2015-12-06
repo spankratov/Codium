@@ -1,6 +1,3 @@
-/**
- * Created by Kirov on 19/11/15.
- */
 (function () {
     'use strict';
 
@@ -8,7 +5,6 @@
         .controller('ActionsController', function (Actions, $window) {
             var vm = this;
             vm.actions = Actions.query();
-            console.log(vm.actions);
 
             vm.new = {};
 

@@ -1,0 +1,24 @@
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Short name</th>
+        <th>Default</th>
+        <th>Min Vlaue</th>
+        <th>Max Value</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="attribute in vm.attributes track by $index">
+        <td>{{ attribute.name }}</td>
+        <td>{{ attribute.short_name }}</td>
+        <td>{{ attribute.default }}</td>
+        <td>{{ attribute.min_value }}</td>
+        <td>{{ attribute.max_value }}</td>
+        <td>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.setCurrentAttribute(attribute)"><span
+                    class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.deleteAttribute($index)"><span
+                    class="glyphicon glyphicon-remove"></span>
+            </button>
+        </td>
+    </tr>
+</table>

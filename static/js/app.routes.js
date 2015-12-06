@@ -15,6 +15,10 @@
                 controller: 'ActionsController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/actions/index.html'
+            }).when('/attributes', {
+                controller: 'AttributesController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/attributes/index.html'
             }).otherwise({
                 redirectTo: '/'
             });

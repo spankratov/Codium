@@ -13,6 +13,7 @@ router.register(r'jobs', views.JobViewSet)
 router.register(r'knowledges', views.KnowledgeViewSet)
 router.register(r'characters', views.CharacterViewSet)
 router.register(r'users', views.UserViewSet)
+router.register(r'characters/(?P<character_id>[0-9]+)/attributes', views.AttributeLevelsViewSet, base_name='attributelevels')
 
 urlpatterns = patterns('',
                        url(r'^', include(router.urls)),

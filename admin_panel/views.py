@@ -2,8 +2,10 @@
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework import permissions
+from rest_framework import mixins
 from admin_panel.serializers import AttributeSerializer, EventSerializer, ActionSerializer, PropertySerializer, \
-    UniversitySerializer, ProjectSerializer, JobSerializer, KnowledgeSerializer, CharacterSerializer, UserSerializer
+    UniversitySerializer, ProjectSerializer, JobSerializer, KnowledgeSerializer, CharacterSerializer, UserSerializer, \
+    AttributeLevelsSerializer
 from userdata.models import Character, AttributeLevels, CharacterJobs, CharacterProjects, CharacterProperties, \
     CharacterUniversities, KnowledgeLevels
 from content.models import Attribute, Event, Action, Property, University, Project, Job, Knowledge
@@ -481,3 +483,40 @@ class UserViewSet(viewsets.ModelViewSet):
         KnowledgeLevels.objects.filter(character=character).delete()
         character.delete()
         super(UserViewSet, self).perform_destroy(instance)
+
+
+class AttributeLevelsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+                             viewsets.GenericViewSet):
+    """Атрибуты персонажа"""
+    serializer_class = AttributeLevelsSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def get_queryset(self):
+        return AttributeLevels.objects.filter(character__id=self.kwargs['character_id'])
+
+    def get_object(self):
+        return AttributeLevels.objects.get(character__id=self.kwargs['character_id'], attribute__id=self.kwargs['pk'])
+
+    def list(self, request, *args, **kwargs):
+        """
+        Список всех атрибутов персонажа.
+        """
+        return super(AttributeLevelsViewSet, self).list(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Получить атрибут персонажа по id атрибута.
+        """
+        return super(AttributeLevelsViewSet, self).retrieve(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Полностью обновить атрибут персонажа по id атрибута.
+        """
+        return super(AttributeLevelsViewSet, self).update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Частично обновить атрибут персонажа по id атрибута.
+        """
+        return super(AttributeLevelsViewSet, self).partial_update(request, *args, **kwargs)

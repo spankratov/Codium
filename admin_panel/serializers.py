@@ -2,7 +2,8 @@ from rest_framework import serializers, validators
 from hvad.contrib.restframework import TranslatableModelSerializer
 from content.models import Attribute, Event, Action, Property, University, Project, Job, Knowledge
 from django.contrib.auth.models import User
-from userdata.models import Character, AttributeLevels, KnowledgeLevels
+from userdata.models import Character, AttributeLevels, CharacterProperties, CharacterUniversities, CharacterProjects, \
+    CharacterJobs, KnowledgeLevels
 
 
 class AttributeSerializer(TranslatableModelSerializer):
@@ -98,3 +99,16 @@ class CharacterSerializer(serializers.ModelSerializer):
         for knowledge in Knowledge.objects.all():
             KnowledgeLevels.objects.create(character=character, knowledge=knowledge, level=0)
         return character
+
+
+class AttributeLevelsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='attribute.id', read_only=True)
+    name = serializers.CharField(max_length=50, source='attribute.name', read_only=True)
+    short_name = serializers.SlugField(source='attribute.short_name', read_only=True)
+    default = serializers.IntegerField(source='attribute.default', read_only=True)
+    min_value = serializers.IntegerField(source='attribute.min_value', read_only=True)
+    max_value = serializers.IntegerField(source='attribute.max_value', read_only=True)
+
+    class Meta:
+        model = AttributeLevels
+        fields = ('id', 'name', 'short_name', 'default', 'min_value', 'max_value', 'level')

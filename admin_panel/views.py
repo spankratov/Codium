@@ -2,8 +2,11 @@
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework import permissions
+from rest_framework import mixins
+from rest_framework.response import Response
 from admin_panel.serializers import AttributeSerializer, EventSerializer, ActionSerializer, PropertySerializer, \
-    UniversitySerializer, ProjectSerializer, JobSerializer, KnowledgeSerializer, CharacterSerializer, UserSerializer
+    UniversitySerializer, ProjectSerializer, JobSerializer, KnowledgeSerializer, CharacterSerializer, UserSerializer, \
+    AttributeLevelsSerializer, CharacterPropertiesSerializer, CharacterUniversitiesSerializer
 from userdata.models import Character, AttributeLevels, CharacterJobs, CharacterProjects, CharacterProperties, \
     CharacterUniversities, KnowledgeLevels
 from content.models import Attribute, Event, Action, Property, University, Project, Job, Knowledge
@@ -481,3 +484,140 @@ class UserViewSet(viewsets.ModelViewSet):
         KnowledgeLevels.objects.filter(character=character).delete()
         character.delete()
         super(UserViewSet, self).perform_destroy(instance)
+
+
+class AttributeLevelsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+                             viewsets.GenericViewSet):
+    """Атрибуты персонажа"""
+    serializer_class = AttributeLevelsSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def get_queryset(self):
+        return AttributeLevels.objects.filter(character__id=self.kwargs['character_id'])
+
+    def get_object(self):
+        return AttributeLevels.objects.get(character__id=self.kwargs['character_id'], attribute__id=self.kwargs['pk'])
+
+    def list(self, request, *args, **kwargs):
+        """
+        Список всех атрибутов персонажа.
+        """
+        return super(AttributeLevelsViewSet, self).list(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Получить атрибут персонажа по id атрибута.
+        """
+        return super(AttributeLevelsViewSet, self).retrieve(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Полностью обновить атрибут персонажа по id атрибута.
+        """
+        return super(AttributeLevelsViewSet, self).update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Частично обновить атрибут персонажа по id атрибута.
+        """
+        return super(AttributeLevelsViewSet, self).partial_update(request, *args, **kwargs)
+
+
+class CharacterPropertiesViewSet(viewsets.ModelViewSet):
+    """Собственность персонажа"""
+    serializer_class = CharacterPropertiesSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def get_queryset(self):
+        return CharacterProperties.objects.filter(character__id=self.kwargs['character_id'])
+
+    def get_object(self):
+        return CharacterProperties.objects.get(character__id=self.kwargs['character_id'], property__id=self.kwargs['pk'])
+
+    def list(self, request, *args, **kwargs):
+        """
+        Список всей собственности персонажа.
+        """
+        return super(CharacterPropertiesViewSet, self).list(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        """
+        Присвоить собственность персонажу
+        """
+        request.data['character_id'] = self.kwargs['character_id']
+        return super(CharacterPropertiesViewSet, self).create(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Получить собственность персонажа по id собственности.
+        """
+        return super(CharacterPropertiesViewSet, self).retrieve(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Полностью обновить собственность персонажа по id собственности.
+        """
+        kwargs['partial'] = True
+        return super(CharacterPropertiesViewSet, self).update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Частично обновить собственность персонажа по id атрибута.
+        """
+        return super(CharacterPropertiesViewSet, self).partial_update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        Удалить собственность у персонажа.
+        """
+        return super(CharacterPropertiesViewSet, self).destroy(request, *args, **kwargs)
+
+
+class CharacterUniversitiesViewSet(viewsets.ModelViewSet):
+    """Университеты персонажа"""
+    serializer_class = CharacterUniversitiesSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def get_queryset(self):
+        return CharacterUniversities.objects.filter(character__id=self.kwargs['character_id'])
+
+    def get_object(self):
+        return CharacterUniversities.objects.get(character__id=self.kwargs['character_id'], university__id=self.kwargs['pk'])
+
+    def list(self, request, *args, **kwargs):
+        """
+        Список всех университетов персонажа.
+        """
+        return super(CharacterUniversitiesViewSet, self).list(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        """
+        Присвоить университет персонажу.
+        """
+        request.data['character_id'] = self.kwargs['character_id']
+        return super(CharacterUniversitiesViewSet, self).create(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Получить университет персонажа по id университета.
+        """
+        return super(CharacterUniversitiesViewSet, self).retrieve(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Полностью обновить университет персонажа по id университета.
+        """
+        kwargs['partial'] = True
+        return super(CharacterUniversitiesViewSet, self).update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Частично обновить университет персонажа по id университета.
+        """
+        return super(CharacterUniversitiesViewSet, self).partial_update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        Удалить университет у персонажа.
+        """
+        return super(CharacterUniversitiesViewSet, self).destroy(request, *args, **kwargs)

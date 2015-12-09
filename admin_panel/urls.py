@@ -21,6 +21,10 @@ router.register(r'characters/(?P<character_id>[0-9]+)/universities', views.Chara
                 base_name='characteruniversities')
 router.register(r'characters/(?P<character_id>[0-9]+)/projects', views.CharacterProjectsViewSet,
                 base_name='characterprojects')
+router.register(r'characters/(?P<character_id>[0-9]+)/jobs', views.CharacterJobsViewSet,
+                base_name='characterjobs')
+router.register(r'characters/(?P<character_id>[0-9]+)/knowledges', views.KnowledgeLevelsViewSet,
+                base_name='knowledgelevels')
 
 urlpatterns = patterns('',
                        url(r'^', include(router.urls)),

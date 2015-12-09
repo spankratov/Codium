@@ -133,6 +133,8 @@ class AttributeLevelsSerializer(serializers.ModelSerializer):
 
 
 class CharacterPropertiesSerializer(serializers.ModelSerializer):
+    character_id = serializers.PrimaryKeyRelatedField(source='character', write_only=True,
+                                                      queryset=Character.objects.all())
     property = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Property.objects.all())
     id = serializers.IntegerField(source='property.id', read_only=True)
     name = serializers.CharField(max_length=50, source='property.name', read_only=True)
@@ -144,22 +146,12 @@ class CharacterPropertiesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CharacterProperties
-        fields = ('property', 'id', 'name', 'description', 'type', 'short_name', 'cost', 'purchase_date')
-
-    def to_internal_value(self, data):
-        validated_data = super(CharacterPropertiesSerializer, self).to_internal_value(data)
-        if not self.partial:
-            character_id = data.get('character_id')
-            if not character_id:
-                raise ValidationError({
-                    'character_id': 'This field is required.'
-                })
-            character_id = int(character_id)
-            validated_data['character'] = Character.objects.get(id=character_id)
-        return validated_data
+        fields = ('character_id', 'property', 'id', 'name', 'description', 'type', 'short_name', 'cost', 'purchase_date')
 
 
 class CharacterUniversitiesSerializer(serializers.ModelSerializer):
+    character_id = serializers.PrimaryKeyRelatedField(source='character', write_only=True,
+                                                      queryset=Character.objects.all())
     university = serializers.PrimaryKeyRelatedField(write_only=True, queryset=University.objects.all())
     id = serializers.IntegerField(source='university.id', read_only=True)
     name = serializers.CharField(max_length=50, source='university.name', read_only=True)
@@ -172,22 +164,14 @@ class CharacterUniversitiesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CharacterUniversities
-        fields = ('university', 'id', 'name', 'description', 'short_name', 'affects', 'requirements', 'entering_date', 'finished')
-
-    def to_internal_value(self, data):
-        validated_data = super(CharacterUniversitiesSerializer, self).to_internal_value(data)
-        if not self.partial:
-            character_id = data.get('character_id')
-            if not character_id:
-                raise ValidationError({
-                    'character_id': 'This field is required.'
-                })
-            character_id = int(character_id)
-            validated_data['character'] = Character.objects.get(id=character_id)
-        return validated_data
+        fields = (
+            'character_id', 'university', 'id', 'name', 'description', 'short_name', 'affects', 'requirements',
+            'entering_date', 'finished')
 
 
 class CharacterProjectsSerializer(serializers.ModelSerializer):
+    character_id = serializers.PrimaryKeyRelatedField(source='character', write_only=True,
+                                                      queryset=Character.objects.all())
     project = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Project.objects.all())
     id = serializers.IntegerField(source='project.id', read_only=True)
     name = serializers.CharField(max_length=50)
@@ -203,17 +187,45 @@ class CharacterProjectsSerializer(serializers.ModelSerializer):
     class Meta:
         model = CharacterProjects
         fields = (
-            'project', 'id', 'name', 'description', 'type', 'short_name', 'affects', 'requirements', 'time_spending',
+            'character_id', 'project', 'id', 'name', 'description', 'type', 'short_name', 'affects', 'requirements',
+            'time_spending', 'taking_date', 'finished')
+
+
+class CharacterJobsSerializer(serializers.ModelSerializer):
+    character_id = serializers.PrimaryKeyRelatedField(source='character', write_only=True,
+                                                      queryset=Character.objects.all())
+    job = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Job.objects.all())
+    id = serializers.IntegerField(source='job.id', read_only=True)
+    name = serializers.CharField(max_length=50, source='job.name', read_only=True)
+    description = serializers.CharField(source='job.description', read_only=True)
+    company_name = serializers.CharField(max_length=50, source='job.company_name', read_only=True)
+    short_name = serializers.SlugField(source='job.short_name', read_only=True)
+    affects = serializers.CharField(max_length=500, source='job.affects', read_only=True)
+    requirements = serializers.CharField(max_length=500, source='job.requirements', read_only=True)
+    taking_date = serializers.IntegerField(default=CurrentCharacterDaysLivedDefault())
+    finished = serializers.BooleanField(default=False)
+
+    class Meta:
+        model = CharacterJobs
+        fields = (
+            'character_id', 'job', 'id', 'name', 'description', 'company_name', 'short_name', 'affects', 'requirements',
             'taking_date', 'finished')
 
-    def to_internal_value(self, data):
-        validated_data = super(CharacterProjectsSerializer, self).to_internal_value(data)
-        if not self.partial:
-            character_id = data.get('character_id')
-            if not character_id:
-                raise ValidationError({
-                    'character_id': 'This field is required.'
-                })
-            character_id = int(character_id)
-            validated_data['character'] = Character.objects.get(id=character_id)
-        return validated_data
+
+class KnowledgeLevelsSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='knowledge.id', read_only=True)
+    name = serializers.CharField(max_length=50, source='knowledge.name', read_only=True)
+    description = serializers.CharField(source='knowledge.description', read_only=True)
+    type = serializers.CharField(max_length=30, source='knowledge.type', read_only=True)
+    short_name = serializers.SlugField(source='knowledge.short_name', read_only=True)
+    requirements = serializers.CharField(max_length=500, source='knowledge.requirements', read_only=True)
+    parents = serializers.PrimaryKeyRelatedField(source='knowledge.parents', many=True,
+                                                 queryset=Knowledge.objects.all(), allow_null=True)
+    children = serializers.PrimaryKeyRelatedField(source='knowledge.children', many=True,
+                                                  queryset=Knowledge.objects.all(), allow_null=True)
+    level = serializers.IntegerField(default=0)
+
+    class Meta:
+        model = KnowledgeLevels
+        fields = (
+            'id', 'name', 'description', 'type', 'short_name', 'requirements', 'parents', 'children', 'level')

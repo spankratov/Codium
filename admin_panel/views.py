@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from admin_panel.serializers import AttributeSerializer, EventSerializer, ActionSerializer, PropertySerializer, \
     UniversitySerializer, ProjectSerializer, JobSerializer, KnowledgeSerializer, CharacterSerializer, UserSerializer, \
     AttributeLevelsSerializer, CharacterPropertiesSerializer, CharacterUniversitiesSerializer, \
-    CharacterProjectsSerializer
+    CharacterProjectsSerializer, CharacterJobsSerializer, KnowledgeLevelsSerializer
 from userdata.models import Character, AttributeLevels, CharacterJobs, CharacterProjects, CharacterProperties, \
     CharacterUniversities, KnowledgeLevels
 from content.models import Attribute, Event, Action, Property, University, Project, Job, Knowledge
@@ -513,8 +513,9 @@ class AttributeLevelsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, m
 
     def update(self, request, *args, **kwargs):
         """
-        Полностью обновить атрибут персонажа по id атрибута.
+        Частично обновить атрибут персонажа по id атрибута.
         """
+        kwargs['partial'] = True
         return super(AttributeLevelsViewSet, self).update(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
@@ -544,6 +545,13 @@ class CharacterPropertiesViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         """
         Присвоить собственность персонажу
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
         """
         request.data['character_id'] = self.kwargs['character_id']
         return super(CharacterPropertiesViewSet, self).create(request, *args, **kwargs)
@@ -557,6 +565,13 @@ class CharacterPropertiesViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         """
         Полностью обновить собственность персонажа по id собственности.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
         """
         request.data['character_id'] = self.kwargs['character_id']
         return super(CharacterPropertiesViewSet, self).update(request, *args, **kwargs)
@@ -564,6 +579,13 @@ class CharacterPropertiesViewSet(viewsets.ModelViewSet):
     def partial_update(self, request, *args, **kwargs):
         """
         Частично обновить собственность персонажа по id атрибута.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
         """
         return super(CharacterPropertiesViewSet, self).partial_update(request, *args, **kwargs)
 
@@ -594,6 +616,13 @@ class CharacterUniversitiesViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         """
         Присвоить университет персонажу.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
         """
         request.data['character_id'] = self.kwargs['character_id']
         return super(CharacterUniversitiesViewSet, self).create(request, *args, **kwargs)
@@ -607,6 +636,13 @@ class CharacterUniversitiesViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         """
         Полностью обновить университет персонажа по id университета.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
         """
         request.data['character_id'] = self.kwargs['character_id']
         return super(CharacterUniversitiesViewSet, self).update(request, *args, **kwargs)
@@ -614,6 +650,13 @@ class CharacterUniversitiesViewSet(viewsets.ModelViewSet):
     def partial_update(self, request, *args, **kwargs):
         """
         Частично обновить университет персонажа по id университета.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
         """
         return super(CharacterUniversitiesViewSet, self).partial_update(request, *args, **kwargs)
 
@@ -644,6 +687,13 @@ class CharacterProjectsViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         """
         Присвоить проект персонажу.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
         """
         request.data['character_id'] = self.kwargs['character_id']
         return super(CharacterProjectsViewSet, self).create(request, *args, **kwargs)
@@ -657,6 +707,13 @@ class CharacterProjectsViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         """
         Полностью обновить проект персонажа по id проекта.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
         """
         request.data['character_id'] = self.kwargs['character_id']
         return super(CharacterProjectsViewSet, self).update(request, *args, **kwargs)
@@ -664,6 +721,13 @@ class CharacterProjectsViewSet(viewsets.ModelViewSet):
     def partial_update(self, request, *args, **kwargs):
         """
         Частично обновить проект персонажа по id проекта.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
         """
         return super(CharacterProjectsViewSet, self).partial_update(request, *args, **kwargs)
 
@@ -672,3 +736,112 @@ class CharacterProjectsViewSet(viewsets.ModelViewSet):
         Удалить проект у персонажа.
         """
         return super(CharacterProjectsViewSet, self).destroy(request, *args, **kwargs)
+
+
+class CharacterJobsViewSet(viewsets.ModelViewSet):
+    """Работа персонажа"""
+    serializer_class = CharacterJobsSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def get_queryset(self):
+        return CharacterJobs.objects.filter(character__id=self.kwargs['character_id'])
+
+    def get_object(self):
+        return CharacterJobs.objects.get(character__id=self.kwargs['character_id'], university__id=self.kwargs['pk'])
+
+    def list(self, request, *args, **kwargs):
+        """
+        Список всех работ персонажа.
+        """
+        return super(CharacterJobsViewSet, self).list(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        """
+        Присвоить работу персонажу.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
+        """
+        request.data['character_id'] = self.kwargs['character_id']
+        return super(CharacterJobsViewSet, self).create(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Получить работу персонажа по id работы.
+        """
+        return super(CharacterJobsViewSet, self).retrieve(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Полностью обновить работу персонажа по id работы.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
+        """
+        request.data['character_id'] = self.kwargs['character_id']
+        return super(CharacterJobsViewSet, self).update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Частично обновить работу персонажа по id работы.
+
+        ---
+        parameters:
+            - name: character_id
+              required: true
+              type: string
+              paramType: path
+        """
+        return super(CharacterJobsViewSet, self).partial_update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        Удалить работу у персонажа.
+        """
+        return super(CharacterJobsViewSet, self).destroy(request, *args, **kwargs)
+
+
+class KnowledgeLevelsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+                             viewsets.GenericViewSet):
+    """Навыки персонажа"""
+    serializer_class = KnowledgeLevelsSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def get_queryset(self):
+        return KnowledgeLevels.objects.filter(character__id=self.kwargs['character_id'])
+
+    def get_object(self):
+        return KnowledgeLevels.objects.get(character__id=self.kwargs['character_id'], university__id=self.kwargs['pk'])
+
+    def list(self, request, *args, **kwargs):
+        """
+        Список всех навыков персонажа.
+        """
+        return super(KnowledgeLevelsViewSet, self).list(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Получить навык персонажа по id навыка.
+        """
+        return super(KnowledgeLevelsViewSet, self).retrieve(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Частично обновить навык персонажа по id навыка.
+        """
+        kwargs['partial'] = True
+        return super(KnowledgeLevelsViewSet, self).update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Частично обновить навык персонажа по id навыка.
+        """
+        return super(KnowledgeLevelsViewSet, self).partial_update(request, *args, **kwargs)

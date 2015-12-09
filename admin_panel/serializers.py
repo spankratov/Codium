@@ -10,6 +10,7 @@ from userdata.models import Character, AttributeLevels, CharacterProperties, Cha
 
 class CurrentCharacterDaysLivedDefault(object):
     days_lived = 0
+
     def set_context(self, serializer_field):
         self.days_lived = serializer_field.context['request'].user.character.days_lived
 
@@ -18,6 +19,9 @@ class CurrentCharacterDaysLivedDefault(object):
 
     def __repr__(self):
         return unicode_to_repr('%s()' % self.__class__.__name__)
+
+    def to_json(self):
+        return ""
 
 
 class AttributeSerializer(TranslatableModelSerializer):

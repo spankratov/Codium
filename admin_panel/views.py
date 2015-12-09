@@ -6,7 +6,8 @@ from rest_framework import mixins
 from rest_framework.response import Response
 from admin_panel.serializers import AttributeSerializer, EventSerializer, ActionSerializer, PropertySerializer, \
     UniversitySerializer, ProjectSerializer, JobSerializer, KnowledgeSerializer, CharacterSerializer, UserSerializer, \
-    AttributeLevelsSerializer, CharacterPropertiesSerializer, CharacterUniversitiesSerializer
+    AttributeLevelsSerializer, CharacterPropertiesSerializer, CharacterUniversitiesSerializer, \
+    CharacterProjectsSerializer
 from userdata.models import Character, AttributeLevels, CharacterJobs, CharacterProjects, CharacterProperties, \
     CharacterUniversities, KnowledgeLevels
 from content.models import Attribute, Event, Action, Property, University, Project, Job, Knowledge
@@ -557,7 +558,7 @@ class CharacterPropertiesViewSet(viewsets.ModelViewSet):
         """
         Полностью обновить собственность персонажа по id собственности.
         """
-        kwargs['partial'] = True
+        request.data['character_id'] = self.kwargs['character_id']
         return super(CharacterPropertiesViewSet, self).update(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
@@ -607,7 +608,7 @@ class CharacterUniversitiesViewSet(viewsets.ModelViewSet):
         """
         Полностью обновить университет персонажа по id университета.
         """
-        kwargs['partial'] = True
+        request.data['character_id'] = self.kwargs['character_id']
         return super(CharacterUniversitiesViewSet, self).update(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
@@ -621,3 +622,53 @@ class CharacterUniversitiesViewSet(viewsets.ModelViewSet):
         Удалить университет у персонажа.
         """
         return super(CharacterUniversitiesViewSet, self).destroy(request, *args, **kwargs)
+
+
+class CharacterProjectsViewSet(viewsets.ModelViewSet):
+    """Проекты персонажа"""
+    serializer_class = CharacterProjectsSerializer
+    permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
+
+    def get_queryset(self):
+        return CharacterProjects.objects.filter(character__id=self.kwargs['character_id'])
+
+    def get_object(self):
+        return CharacterProjects.objects.get(character__id=self.kwargs['character_id'], university__id=self.kwargs['pk'])
+
+    def list(self, request, *args, **kwargs):
+        """
+        Список всех проектов персонажа.
+        """
+        return super(CharacterProjectsViewSet, self).list(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        """
+        Присвоить проект персонажу.
+        """
+        request.data['character_id'] = self.kwargs['character_id']
+        return super(CharacterProjectsViewSet, self).create(request, *args, **kwargs)
+
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Получить проект персонажа по id проекта.
+        """
+        return super(CharacterProjectsViewSet, self).retrieve(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        """
+        Полностью обновить проект персонажа по id проекта.
+        """
+        request.data['character_id'] = self.kwargs['character_id']
+        return super(CharacterProjectsViewSet, self).update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Частично обновить проект персонажа по id проекта.
+        """
+        return super(CharacterProjectsViewSet, self).partial_update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        Удалить проект у персонажа.
+        """
+        return super(CharacterProjectsViewSet, self).destroy(request, *args, **kwargs)

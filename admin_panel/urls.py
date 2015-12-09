@@ -19,6 +19,8 @@ router.register(r'characters/(?P<character_id>[0-9]+)/properties', views.Charact
                 base_name='characterproperties')
 router.register(r'characters/(?P<character_id>[0-9]+)/universities', views.CharacterUniversitiesViewSet,
                 base_name='characteruniversities')
+router.register(r'characters/(?P<character_id>[0-9]+)/projects', views.CharacterProjectsViewSet,
+                base_name='characterprojects')
 
 urlpatterns = patterns('',
                        url(r'^', include(router.urls)),

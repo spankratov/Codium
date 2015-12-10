@@ -1,0 +1,26 @@
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Company name</th>
+        <th>Short name</th>
+        <th>Affects</th>
+        <th>Requirements</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="job in vm.jobs track by $index">
+        <td>{{ job.name }}</td>
+        <td>{{ job.description }}</td>
+        <td>{{ job.company_name }}</td>
+        <td>{{ job.short_name }}</td>
+        <td>{{ job.affects }}</td>
+        <td>{{ job.requirements }}</td>
+        <td>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.setCurrentJob(job)"><span
+                    class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.deleteJob($index)"><span
+                    class="glyphicon glyphicon-remove"></span>
+            </button>
+        </td>
+    </tr>
+</table>

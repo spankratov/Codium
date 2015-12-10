@@ -1,0 +1,56 @@
+<h2 class="text-center">Добавить новый Event</h2>
+<form class="form-horizontal" role="form" ng-submit="vm.saveEvent()">
+    <div class="form-group">
+        <label for="name" class="col-sm-3 control-label">Name</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="name" placeholder="Name" ng-model="vm.new.name" required
+                   value="name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description" class="col-sm-3 control-label">Description</label>
+
+        <div class="col-sm-9">
+            <textarea id="description" class="form-control" rows="3" ng-model="vm.new.description" required
+                      placeholder="description"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="short_name" class="col-sm-3 control-label">Short name</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="short_name" placeholder="Short name"
+                   ng-model="vm.new.short_name" required value="short name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="affects" class="col-sm-3 control-label">Affects</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="affects" placeholder="Affects" ng-model="vm.new.affects" required
+                   value="affects">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="requirements" class="col-sm-3 control-label">Requirements</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="requirements" placeholder="Requirements"
+                   ng-model="vm.new.requirements" required value="requirements">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="chance" class="col-sm-3 control-label">Chance</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="chance" placeholder="Chance"
+                   ng-model="vm.new.chance" required value="chance">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Сохранить</button>
+        </div>
+    </div>
+</form>

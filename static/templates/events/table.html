@@ -1,0 +1,26 @@
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Short name</th>
+        <th>Affects</th>
+        <th>Requirements</th>
+        <th>Chance</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="event in vm.events track by $index">
+        <td>{{ event.name }}</td>
+        <td>{{ event.description }}</td>
+        <td>{{ event.short_name }}</td>
+        <td>{{ event.affects }}</td>
+        <td>{{ event.requirements }}</td>
+        <td>{{ event.chance }}</td>
+        <td>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.setCurrentEvent(event)"><span
+                    class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.deleteEvent($index)"><span
+                    class="glyphicon glyphicon-remove"></span>
+            </button>
+        </td>
+    </tr>
+</table>

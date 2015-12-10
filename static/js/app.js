@@ -6,7 +6,12 @@
         'application.routes',
         'application.auth',
         'application.actions',
-        'application.attributes'
+        'application.attributes',
+        'application.events',
+        'application.properties',
+        'application.universities',
+        'application.projects',
+        'application.jobs'
     ]);
     angular.module('application.config', ['ngResource']);
     angular.module('application.routes', ['ngRoute']);

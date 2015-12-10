@@ -16,6 +16,26 @@
                 controller: 'AttributesController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/attributes/index.html'
+            }).when('/events', {
+                controller: 'EventsController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/events/index.html'
+            }).when('/properties', {
+                controller: 'PropertiesController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/properties/index.html'
+            }).when('/universities', {
+                controller: 'UniversitiesController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/universities/index.html'
+            }).when('/projects', {
+                controller: 'ProjectsController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/projects/index.html'
+            }).when('/jobs', {
+                controller: 'JobsController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/jobs/index.html'
             }).otherwise({
                 redirectTo: '/'
             });

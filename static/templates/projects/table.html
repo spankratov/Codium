@@ -1,0 +1,26 @@
+<table class="table table-hover">
+    <tr>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Short name</th>
+        <th>Affects</th>
+        <th>Requirements</th>
+        <th>Time spending</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="project in vm.projects track by $index">
+        <td>{{ project.description }}</td>
+        <td>{{ project.type }}</td>
+        <td>{{ project.short_name }}</td>
+        <td>{{ project.affects }}</td>
+        <td>{{ project.requirements }}</td>
+        <td>{{ project.time_spending }}</td>
+        <td>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.setCurrentProject(project)"><span
+                    class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.deleteProject($index)"><span
+                    class="glyphicon glyphicon-remove"></span>
+            </button>
+        </td>
+    </tr>
+</table>

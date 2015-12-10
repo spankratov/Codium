@@ -1,0 +1,24 @@
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Short name</th>
+        <th>Cost</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="property in vm.properties track by $index">
+        <td>{{ property.name }}</td>
+        <td>{{ property.description }}</td>
+        <td>{{ property.type }}</td>
+        <td>{{ property.short_name }}</td>
+        <td>{{ property.cost }}</td>
+        <td>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.setCurrentProperty(property)"><span
+                    class="glyphicon glyphicon-edit"></span></button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="vm.deleteProperty($index)"><span
+                    class="glyphicon glyphicon-remove"></span>
+            </button>
+        </td>
+    </tr>
+</table>

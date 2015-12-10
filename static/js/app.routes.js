@@ -36,6 +36,11 @@
                 controller: 'JobsController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/jobs/index.html'
+            }).when('/docs/', {
+                controller: function () {
+                    window.location.replace('http://127.0.0.1:8000/docs/');
+                },
+                template: "<div></div>"
             }).otherwise({
                 redirectTo: '/'
             });

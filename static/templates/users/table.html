@@ -1,0 +1,15 @@
+<table class="table table-hover table-striped table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="user in vm.users track by $index">
+        <td>{{ user.id }}</td>
+        <td><a href="/users/{{ user.id }}/">{{ user.username }}</a></td>
+        <td>
+            <a class="btn btn-block btn-danger btn-sm" ng-click="vm.deleteUser($index)">Удалить
+            </a>
+        </td>
+    </tr>
+</table>

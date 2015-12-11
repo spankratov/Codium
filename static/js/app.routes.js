@@ -15,7 +15,7 @@
             }).when('/attributes', {
                 controller: 'AttributesController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/attributes/index.html'
+                templateUrl: '/static/templates/attributes/content/index.html'
             }).when('/events', {
                 controller: 'EventsController',
                 controllerAs: 'vm',
@@ -36,6 +36,14 @@
                 controller: 'JobsController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/jobs/index.html'
+            }).when('/users', {
+                controller: 'UsersController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/users/index.html'
+            }).when('/users/:userId/', {
+                controller: 'ProfileController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/profile/index.html'
             }).when('/docs/', {
                 controller: function () {
                     window.location.replace('http://127.0.0.1:8000/docs/');

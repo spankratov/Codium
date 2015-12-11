@@ -29,5 +29,35 @@
                 Attributes.update({attributeId: vm.currentAttribute.id}, vm.currentAttribute);
                 $window.location = "/attributes"
             }
+        });
+
+    angular.module('application.attributes.controllers')
+        .controller('CharacterAttributesController', function (CharacterAttributes, $window, $scope) {
+
+            var vm = this;
+
+            vm.init = function (id) {
+                vm.characterId = id;
+                CharacterAttributes.query({characterId: id}).$promise.then(function (data) {
+                    vm.attributes = data;
+                })
+            };
+
+            vm.update = function (index) {
+                CharacterAttributes.update({
+                    characterId: vm.characterId, attributeId: vm.attributes[index].id
+                }, vm.attributes[index]).$promise.then(function (response) {
+                    if (response.$status == 200) {
+                        vm.attributes[index].is_updated = true;
+                        vm.attributes[index].class = "glyphicon glyphicon-ok";
+                    } else {
+                        vm.attributes[index].is_updated = true;
+                        vm.attributes[index].class = "glyphicon glyphicon-remove";
+                    }
+                });
+            }
+
+
         })
+
 })();

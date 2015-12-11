@@ -1,0 +1,40 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">Общая информация</div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form" ng-submit="vm.character.update()">
+            <div class="form-group">
+                <label for="days_lived" class="col-sm-4 control-label">Days lived</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="days_lived"
+                           placeholder="days_lived" ng-model="vm.character.days_lived" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="seconds_in_current_day" class="col-sm-4 control-label">Seconds in current day</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="seconds_in_current_day"
+                           placeholder="seconds_in_current_day" ng-model="vm.character.seconds_in_current_day" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="last_update" class="col-sm-4 control-label">Last update</label>
+
+                <div class="col-sm-8">
+                    <input type="datetime" class="form-control" id="last_update"
+                           placeholder="last_update" ng-model="vm.character.last_update" required
+                            disabled>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-4 col-sm-4">
+                    <button type="submit" class="btn btn-block btn-primary">Сохранить</button>
+                </div>
+                <div class="col-sm-offset-0 col-sm-4">
+                    <button type="button" ng-click="vm.character.delete()" class="btn btn-block btn-danger">Удалить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

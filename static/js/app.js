@@ -11,7 +11,9 @@
         'application.properties',
         'application.universities',
         'application.projects',
-        'application.jobs'
+        'application.jobs',
+        'application.users',
+        'application.characters'
     ]);
     angular.module('application.config', ['ngResource']);
     angular.module('application.routes', ['ngRoute']);

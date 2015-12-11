@@ -747,7 +747,7 @@ class CharacterJobsViewSet(viewsets.ModelViewSet):
         return CharacterJobs.objects.filter(character__id=self.kwargs['character_id'])
 
     def get_object(self):
-        return CharacterJobs.objects.get(character__id=self.kwargs['character_id'], university__id=self.kwargs['pk'])
+        return CharacterJobs.objects.get(id=self.kwargs['pk'])
 
     def list(self, request, *args, **kwargs):
         """

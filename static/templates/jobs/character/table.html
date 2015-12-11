@@ -1,0 +1,36 @@
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Company name</th>
+        <th>Short name</th>
+        <th>Affects</th>
+        <th>Requirements</th>
+        <th>Taking date</th>
+        <th>Finish date</th>
+        <th colspan="2"></th>
+    </tr>
+    <tr ng-repeat="job in CharJobCtrl.jobs track by $index">
+        <td>{{ job.name }}</td>
+        <td>{{ job.description }}</td>
+        <td>{{ job.company_name }}</td>
+        <td>{{ job.short_name }}</td>
+        <td>{{ job.affects }}</td>
+        <td>{{ job.requirements }}</td>
+        <td><input type="text" class="form-control" id="level" ng-model="job.taking_date" required/></td>
+        <td><input type="checkbox" id="finish" ng-checked="job.finished"/></td>
+        <td>
+            <button type="button" class="btn btn-primary btn-block"
+                    ng-click="CharJobCtrl.update($index)">Обновить
+            </button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger btn-block"
+                    ng-click="CharJobCtrl.delete($index)">Удалить
+            </button>
+        </td>
+        <td>
+            <span ng-class="job.class" ng-show="job.class"></span>
+        </td>
+    </tr>
+</table>

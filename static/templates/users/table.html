@@ -6,7 +6,7 @@
     </tr>
     <tr ng-repeat="user in vm.users track by $index">
         <td>{{ user.id }}</td>
-        <td><a href="/users/{{ user.id }}/">{{ user.username }}</a></td>
+        <td><a href="/users/{{ user.id }}/character/{{ user.character }}/">{{ user.username }}</a></td>
         <td>
             <a class="btn btn-block btn-danger btn-sm" ng-click="vm.deleteUser($index)">Удалить
             </a>

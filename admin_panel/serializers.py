@@ -195,7 +195,7 @@ class CharacterJobsSerializer(serializers.ModelSerializer):
     character_id = serializers.PrimaryKeyRelatedField(source='character', write_only=True,
                                                       queryset=Character.objects.all())
     job = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Job.objects.all())
-    id = serializers.IntegerField(source='job.id', read_only=True)
+    # id = serializers.IntegerField(source='job.id', read_only=True)
     name = serializers.CharField(max_length=50, source='job.name', read_only=True)
     description = serializers.CharField(source='job.description', read_only=True)
     company_name = serializers.CharField(max_length=50, source='job.company_name', read_only=True)

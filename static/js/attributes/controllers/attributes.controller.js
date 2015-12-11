@@ -32,14 +32,12 @@
         });
 
     angular.module('application.attributes.controllers')
-        .controller('CharacterAttributesController', function (CharacterAttributes, $window, $scope) {
+        .controller('CharacterAttributesController', function (CharacterAttributes, $window, $scope, $routeParams) {
 
             var vm = this;
 
-            vm.init = function (id) {
-                vm.characterId = id;
-                vm.attributes = CharacterAttributes.query({characterId: id});
-            };
+
+            vm.attributes = CharacterAttributes.query({characterId: $routeParams.characterId});
 
             vm.body = false;
 

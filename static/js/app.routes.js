@@ -40,7 +40,7 @@
                 controller: 'UsersController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/users/index.html'
-            }).when('/users/:userId/', {
+            }).when('/users/:userId/character/:characterId/', {
                 controller: 'ProfileController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/profile/index.html'

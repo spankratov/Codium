@@ -1,14 +1,14 @@
 <div class="panel panel-info" ng-controller="CharacterAttributesController as CharAttrCtrl">
-    <div class="panel-heading"><a ng-click="CharAttrCtrl.body = !CharAttrCtrl.body">Attributes</a></div>
+    <div class="panel-heading"><a ng-click="CharAttrCtrl.body = !CharAttrCtrl.body">Properties</a></div>
     <div class="panel-body" ng-init="CharAttrCtrl.init(vm.user.character)" ng-show="CharAttrCtrl.body">
         <table class="table table-hover">
             <tr>
                 <th>Name</th>
+                <th>Description</th>
+                <th>Type</th>
                 <th>Short name</th>
-                <th>Default</th>
-                <th>Min Vlaue</th>
-                <th>Max Value</th>
-                <th>Level</th>
+                <th>Cost</th>
+                <th>Purchase date</th>
                 <th colspan="2"></th>
             </tr>
             <tr ng-repeat="attribute in CharAttrCtrl.attributes track by $index">

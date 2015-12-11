@@ -11,7 +11,7 @@
             }).when('/actions', {
                 controller: 'ActionsController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/actions/index.html'
+                templateUrl: '/static/templates/actions/content/index.html'
             }).when('/attributes', {
                 controller: 'AttributesController',
                 controllerAs: 'vm',
@@ -19,23 +19,23 @@
             }).when('/events', {
                 controller: 'EventsController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/events/index.html'
+                templateUrl: '/static/templates/events/content/index.html'
             }).when('/properties', {
                 controller: 'PropertiesController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/properties/index.html'
+                templateUrl: '/static/templates/properties/content/index.html'
             }).when('/universities', {
                 controller: 'UniversitiesController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/universities/index.html'
+                templateUrl: '/static/templates/universities/content/index.html'
             }).when('/projects', {
                 controller: 'ProjectsController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/projects/index.html'
+                templateUrl: '/static/templates/projects/content/index.html'
             }).when('/jobs', {
                 controller: 'JobsController',
                 controllerAs: 'vm',
-                templateUrl: '/static/templates/jobs/index.html'
+                templateUrl: '/static/templates/jobs/content/index.html'
             }).when('/users', {
                 controller: 'UsersController',
                 controllerAs: 'vm',

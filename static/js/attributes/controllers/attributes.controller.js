@@ -38,10 +38,10 @@
 
             vm.init = function (id) {
                 vm.characterId = id;
-                CharacterAttributes.query({characterId: id}).$promise.then(function (data) {
-                    vm.attributes = data;
-                })
+                vm.attributes = CharacterAttributes.query({characterId: id});
             };
+
+            vm.body = false;
 
             vm.update = function (index) {
                 CharacterAttributes.update({

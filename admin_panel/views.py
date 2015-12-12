@@ -55,10 +55,6 @@ class AttributeViewSet(viewsets.ModelViewSet):
         """
         return super(AttributeViewSet, self).destroy(request, *args, **kwargs)
 
-    def perform_destroy(self, instance):
-        AttributeLevels.objects.filter(attribute=instance).delete()
-        super(AttributeViewSet, self).perform_destroy(instance)
-
 
 class EventViewSet(viewsets.ModelViewSet):
     """ Сущность  \"Событие\" """
@@ -188,10 +184,6 @@ class PropertyViewSet(viewsets.ModelViewSet):
         """
         return super(PropertyViewSet, self).destroy(request, *args, **kwargs)
 
-    def perform_destroy(self, instance):
-        CharacterProperties.objects.filter(property=instance).delete()
-        super(PropertyViewSet, self).perform_destroy(instance)
-
 
 class UniversityViewSet(viewsets.ModelViewSet):
     """ Сущность  \"Университет\" """
@@ -234,10 +226,6 @@ class UniversityViewSet(viewsets.ModelViewSet):
         Удалить университет.
         """
         return super(UniversityViewSet, self).destroy(request, *args, **kwargs)
-
-    def perform_destroy(self, instance):
-        CharacterUniversities.objects.filter(university=instance).delete()
-        super(UniversityViewSet, self).perform_destroy(instance)
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -282,10 +270,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
         """
         return super(ProjectViewSet, self).destroy(request, *args, **kwargs)
 
-    def perform_destroy(self, instance):
-        CharacterProjects.objects.filter(project=instance).delete()
-        super(ProjectViewSet, self).perform_destroy(instance)
-
 
 class JobViewSet(viewsets.ModelViewSet):
     """ Сущность  \"Работа\" """
@@ -328,10 +312,6 @@ class JobViewSet(viewsets.ModelViewSet):
         Удалить работу.
         """
         return super(JobViewSet, self).destroy(request, *args, **kwargs)
-
-    def perform_destroy(self, instance):
-        CharacterJobs.objects.filter(job=instance).delete()
-        super(JobViewSet, self).perform_destroy(instance)
 
 
 class KnowledgeViewSet(viewsets.ModelViewSet):
@@ -376,12 +356,9 @@ class KnowledgeViewSet(viewsets.ModelViewSet):
         """
         return super(KnowledgeViewSet, self).destroy(request, *args, **kwargs)
 
-    def perform_destroy(self, instance):
-        KnowledgeLevels.objects.filter(knowledge=instance).delete()
-        super(KnowledgeViewSet, self).perform_destroy(instance)
 
-
-class CharacterViewSet(viewsets.ModelViewSet):
+class CharacterViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
+                       viewsets.GenericViewSet):
     """ Сущность  \"Персонаж\" """
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
@@ -392,12 +369,6 @@ class CharacterViewSet(viewsets.ModelViewSet):
         Список всех персонажей.
         """
         return super(CharacterViewSet, self).list(request, *args, **kwargs)
-
-    def create(self, request, *args, **kwargs):
-        """
-        Создать персонажа.
-        """
-        return super(CharacterViewSet, self).create(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         """
@@ -416,21 +387,6 @@ class CharacterViewSet(viewsets.ModelViewSet):
         Частично обновить персонажа.
         """
         return super(CharacterViewSet, self).partial_update(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        """
-        Удалить персонажа.
-        """
-        return super(CharacterViewSet, self).destroy(request, *args, **kwargs)
-
-    def perform_destroy(self, instance):
-        AttributeLevels.objects.filter(character=instance).delete()
-        CharacterJobs.objects.filter(character=instance).delete()
-        CharacterProjects.objects.filter(character=instance).delete()
-        CharacterProperties.objects.filter(character=instance).delete()
-        CharacterUniversities.objects.filter(character=instance).delete()
-        KnowledgeLevels.objects.filter(character=instance).delete()
-        super(CharacterViewSet, self).perform_destroy(instance)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -474,17 +430,6 @@ class UserViewSet(viewsets.ModelViewSet):
         Удалить пользователя.
         """
         return super(UserViewSet, self).destroy(request, *args, **kwargs)
-
-    def perform_destroy(self, instance):
-        character = instance.character
-        AttributeLevels.objects.filter(character=character).delete()
-        CharacterJobs.objects.filter(character=character).delete()
-        CharacterProjects.objects.filter(character=character).delete()
-        CharacterProperties.objects.filter(character=character).delete()
-        CharacterUniversities.objects.filter(character=character).delete()
-        KnowledgeLevels.objects.filter(character=character).delete()
-        character.delete()
-        super(UserViewSet, self).perform_destroy(instance)
 
 
 class AttributeLevelsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin,
@@ -534,7 +479,8 @@ class CharacterPropertiesViewSet(viewsets.ModelViewSet):
         return CharacterProperties.objects.filter(character__id=self.kwargs['character_id'])
 
     def get_object(self):
-        return CharacterProperties.objects.get(character__id=self.kwargs['character_id'], property__id=self.kwargs['pk'])
+        return CharacterProperties.objects.get(character__id=self.kwargs['character_id'],
+                                               property__id=self.kwargs['pk'])
 
     def list(self, request, *args, **kwargs):
         """
@@ -605,7 +551,8 @@ class CharacterUniversitiesViewSet(viewsets.ModelViewSet):
         return CharacterUniversities.objects.filter(character__id=self.kwargs['character_id'])
 
     def get_object(self):
-        return CharacterUniversities.objects.get(character__id=self.kwargs['character_id'], university__id=self.kwargs['pk'])
+        return CharacterUniversities.objects.get(character__id=self.kwargs['character_id'],
+                                                 university__id=self.kwargs['pk'])
 
     def list(self, request, *args, **kwargs):
         """

@@ -29,12 +29,6 @@ class AttributeSerializer(TranslatableModelSerializer):
         model = Attribute
         fields = ('id', 'name', 'short_name', 'default', 'min_value', 'max_value', 'language_code')
 
-    def create(self, validated_data):
-        attribute = super(AttributeSerializer, self).create(validated_data)
-        for character in Character.objects.all():
-            AttributeLevels.objects.create(character=character, attribute=attribute, level=attribute.default)
-        return attribute
-
 
 class EventSerializer(TranslatableModelSerializer):
     class Meta:
@@ -88,19 +82,23 @@ class KnowledgeSerializer(TranslatableModelSerializer):
         model = Knowledge
         fields = ('id', 'name', 'description', 'type', 'short_name', 'requirements', 'parents', 'children')
 
-    def create(self, validated_data):
-        knowledge = super(KnowledgeSerializer, self).create(validated_data)
-        for character in Character.objects.all():
-            KnowledgeLevels.objects.create(character=character, knowledge=knowledge, level=0)
-        return knowledge
-
 
 class UserSerializer(serializers.ModelSerializer):
-    character = serializers.PrimaryKeyRelatedField(queryset=Character.objects.all(), required=False)
+    character = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'character')
+        fields = ('id', 'username', 'email', 'password', 'character')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = User(
+            email=validated_data['email'],
+            username=validated_data['username']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 class CharacterSerializer(serializers.ModelSerializer):
@@ -109,14 +107,6 @@ class CharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Character
         fields = ('id', 'days_lived', 'seconds_in_current_day', 'last_update', 'user')
-
-    def create(self, validated_data):
-        character = super(CharacterSerializer, self).create(validated_data)
-        for attribute in Attribute.objects.all():
-            AttributeLevels.objects.create(character=character, attribute=attribute, level=attribute.default)
-        for knowledge in Knowledge.objects.all():
-            KnowledgeLevels.objects.create(character=character, knowledge=knowledge, level=0)
-        return character
 
 
 class AttributeLevelsSerializer(serializers.ModelSerializer):

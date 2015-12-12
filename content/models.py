@@ -195,8 +195,8 @@ class Knowledge(TranslatableModel):
     translations = TranslatedFields(
         name=models.CharField(max_length=50),
         description=models.TextField(),
-        type=models.CharField(max_length=30)
     )
+    type = models.CharField(max_length=30)
     short_name = models.SlugField(unique=True)
     requirements = models.CharField(max_length=500)
     children = models.ManyToManyField('self', symmetrical=False, related_name='parents')

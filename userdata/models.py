@@ -13,6 +13,7 @@ KnowledgeLevels -- many-to-many table with characters and their knowledge levels
 """
 from django.db import models
 from django.contrib.auth.models import User
+from statistics import mean
 
 
 class Character(models.Model):
@@ -144,4 +145,20 @@ class KnowledgeLevels(models.Model):
     """
     character = models.ForeignKey(Character)
     knowledge = models.ForeignKey('content.Knowledge', limit_choices_to={'type': 'skill'})
-    level = models.FloatField()
+    level = models.FloatField(default=0)
+
+    def calculate_level(self):
+        children = self.knowledge.children.all()
+        children_levels = KnowledgeLevels.objects.filter(character=self.character, knowledge__in=children).values_list('level', flat=True)
+        if children.exists():
+            if self.knowledge.type == 'one-of-area':
+                self.level = max(children_levels)
+            elif self.knowledge.type == 'area':
+                self.level = mean(children_levels)
+        self.save()
+
+    def calculate_parents_level(self):
+        parents = self.knowledge.parents.all()
+        parents_links = KnowledgeLevels.objects.filter(character=self.character, knowledge__in=parents)
+        for each in parents_links:
+            each.calculate_level()

@@ -676,7 +676,7 @@ class CharacterProjectsViewSet(viewsets.ModelViewSet):
         return CharacterProjects.objects.filter(character__id=self.kwargs['character_id'])
 
     def get_object(self):
-        return CharacterProjects.objects.get(character__id=self.kwargs['character_id'], university__id=self.kwargs['pk'])
+        return CharacterProjects.objects.get(character__id=self.kwargs['character_id'], project__id=self.kwargs['pk'])
 
     def list(self, request, *args, **kwargs):
         """
@@ -747,7 +747,7 @@ class CharacterJobsViewSet(viewsets.ModelViewSet):
         return CharacterJobs.objects.filter(character__id=self.kwargs['character_id'])
 
     def get_object(self):
-        return CharacterJobs.objects.get(id=self.kwargs['pk'])
+        return CharacterJobs.objects.get(character__id=self.kwargs['character_id'], job__id=self.kwargs['pk'])
 
     def list(self, request, *args, **kwargs):
         """
@@ -819,7 +819,7 @@ class KnowledgeLevelsViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, m
         return KnowledgeLevels.objects.filter(character__id=self.kwargs['character_id'])
 
     def get_object(self):
-        return KnowledgeLevels.objects.get(character__id=self.kwargs['character_id'], university__id=self.kwargs['pk'])
+        return KnowledgeLevels.objects.get(character__id=self.kwargs['character_id'], knowledge__id=self.kwargs['pk'])
 
     def list(self, request, *args, **kwargs):
         """

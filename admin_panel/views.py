@@ -391,7 +391,7 @@ class CharacterViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.
 
 class UserViewSet(viewsets.ModelViewSet):
     """ Сущность  \"Пользователь\" """
-    queryset = User.objects.all()
+    queryset = User.objects.filter(is_staff=False)
     serializer_class = UserSerializer
     permission_classes = (permissions.IsAuthenticated, permissions.IsAdminUser)
 

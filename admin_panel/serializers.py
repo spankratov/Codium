@@ -6,6 +6,7 @@ from content.models import Attribute, Event, Action, Property, University, Proje
 from django.contrib.auth.models import User
 from userdata.models import Character, AttributeLevels, CharacterProperties, CharacterUniversities, CharacterProjects, \
     CharacterJobs, KnowledgeLevels
+from admin_panel.validators import DefaultFromMinToMax, LevelFromMinToMax
 
 
 class CurrentCharacterDaysLivedDefault(object):
@@ -25,6 +26,7 @@ class CurrentCharacterDaysLivedDefault(object):
 
 
 class AttributeSerializer(TranslatableModelSerializer):
+    default = serializers.IntegerField(validators=[DefaultFromMinToMax()])
     class Meta:
         model = Attribute
         fields = ('id', 'name', 'short_name', 'default', 'min_value', 'max_value', 'language_code')
@@ -116,6 +118,7 @@ class AttributeLevelsSerializer(serializers.ModelSerializer):
     default = serializers.IntegerField(source='attribute.default', read_only=True)
     min_value = serializers.IntegerField(source='attribute.min_value', read_only=True)
     max_value = serializers.IntegerField(source='attribute.max_value', read_only=True)
+    level = serializers.IntegerField(validators=[LevelFromMinToMax()])
 
     class Meta:
         model = AttributeLevels

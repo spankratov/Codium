@@ -6,7 +6,8 @@ from content.models import Attribute, Event, Action, Property, University, Proje
 from django.contrib.auth.models import User
 from userdata.models import Character, AttributeLevels, CharacterProperties, CharacterUniversities, CharacterProjects, \
     CharacterJobs, KnowledgeLevels
-from admin_panel.validators import DefaultFromMinToMax, LevelFromMinToMax
+from admin_panel.validators import DefaultFromMinToMax, LevelFromMinToMax, NotBiggerThanCharacterDaysLived, \
+    from_zero_to_hundred
 
 
 class CurrentCharacterDaysLivedDefault(object):
@@ -26,13 +27,18 @@ class CurrentCharacterDaysLivedDefault(object):
 
 
 class AttributeSerializer(TranslatableModelSerializer):
+    short_name = serializers.SlugField(validators=[validators.UniqueValidator(queryset=Attribute.objects.all())])
     default = serializers.IntegerField(validators=[DefaultFromMinToMax()])
+
     class Meta:
         model = Attribute
         fields = ('id', 'name', 'short_name', 'default', 'min_value', 'max_value', 'language_code')
 
 
 class EventSerializer(TranslatableModelSerializer):
+    short_name = serializers.SlugField(validators=[validators.UniqueValidator(queryset=Event.objects.all())])
+    chance = serializers.FloatField(validators=[from_zero_to_hundred])
+
     class Meta:
         model = Event
         fields = (
@@ -40,6 +46,8 @@ class EventSerializer(TranslatableModelSerializer):
 
 
 class ActionSerializer(TranslatableModelSerializer):
+    short_name = serializers.SlugField(validators=[validators.UniqueValidator(queryset=Action.objects.all())])
+
     class Meta:
         model = Action
         fields = (
@@ -47,6 +55,8 @@ class ActionSerializer(TranslatableModelSerializer):
 
 
 class PropertySerializer(TranslatableModelSerializer):
+    short_name = serializers.SlugField(validators=[validators.UniqueValidator(queryset=Property.objects.all())])
+
     class Meta:
         model = Property
         fields = (
@@ -54,6 +64,8 @@ class PropertySerializer(TranslatableModelSerializer):
 
 
 class UniversitySerializer(TranslatableModelSerializer):
+    short_name = serializers.SlugField(validators=[validators.UniqueValidator(queryset=University.objects.all())])
+
     class Meta:
         model = University
         fields = (
@@ -61,6 +73,8 @@ class UniversitySerializer(TranslatableModelSerializer):
 
 
 class ProjectSerializer(TranslatableModelSerializer):
+    short_name = serializers.SlugField(validators=[validators.UniqueValidator(queryset=Project.objects.all())])
+
     class Meta:
         model = Project
         fields = (
@@ -69,6 +83,8 @@ class ProjectSerializer(TranslatableModelSerializer):
 
 
 class JobSerializer(TranslatableModelSerializer):
+    short_name = serializers.SlugField(validators=[validators.UniqueValidator(queryset=Job.objects.all())])
+
     class Meta:
         model = Job
         fields = (
@@ -77,6 +93,7 @@ class JobSerializer(TranslatableModelSerializer):
 
 
 class KnowledgeSerializer(TranslatableModelSerializer):
+    short_name = serializers.SlugField(validators=[validators.UniqueValidator(queryset=Knowledge.objects.all())])
     parents = serializers.PrimaryKeyRelatedField(many=True, queryset=Knowledge.objects.all(), allow_null=True)
     children = serializers.PrimaryKeyRelatedField(many=True, queryset=Knowledge.objects.all(), allow_null=True)
 
@@ -135,11 +152,13 @@ class CharacterPropertiesSerializer(serializers.ModelSerializer):
     type = serializers.CharField(max_length=30, source='property.type', read_only=True)
     short_name = serializers.SlugField(source='property.short_name', read_only=True)
     cost = serializers.IntegerField(source='property.cost', read_only=True)
-    purchase_date = serializers.IntegerField(default=CurrentCharacterDaysLivedDefault)
+    purchase_date = serializers.IntegerField(default=CurrentCharacterDaysLivedDefault(),
+                                             validators=[NotBiggerThanCharacterDaysLived()])
 
     class Meta:
         model = CharacterProperties
-        fields = ('character_id', 'property', 'id', 'name', 'description', 'type', 'short_name', 'cost', 'purchase_date')
+        fields = (
+            'character_id', 'property', 'id', 'name', 'description', 'type', 'short_name', 'cost', 'purchase_date')
 
 
 class CharacterUniversitiesSerializer(serializers.ModelSerializer):
@@ -152,7 +171,8 @@ class CharacterUniversitiesSerializer(serializers.ModelSerializer):
     short_name = serializers.SlugField(source='university.short_name', read_only=True)
     affects = serializers.CharField(max_length=500, source='university.affects', read_only=True)
     requirements = serializers.CharField(max_length=500, source='university.requirements', read_only=True)
-    entering_date = serializers.IntegerField(default=CurrentCharacterDaysLivedDefault())
+    entering_date = serializers.IntegerField(default=CurrentCharacterDaysLivedDefault(),
+                                             validators=[NotBiggerThanCharacterDaysLived()])
     finished = serializers.BooleanField(default=False)
 
     class Meta:
@@ -174,7 +194,8 @@ class CharacterProjectsSerializer(serializers.ModelSerializer):
     affects = serializers.CharField(max_length=500, source='project.affects', read_only=True)
     requirements = serializers.CharField(max_length=500, source='project.requirements', read_only=True)
     time_spending = serializers.IntegerField(source='project.time_spending', read_only=True)
-    taking_date = serializers.IntegerField(default=CurrentCharacterDaysLivedDefault())
+    taking_date = serializers.IntegerField(default=CurrentCharacterDaysLivedDefault(),
+                                           validators=[NotBiggerThanCharacterDaysLived()])
     finished = serializers.BooleanField(default=False)
 
     class Meta:
@@ -195,7 +216,8 @@ class CharacterJobsSerializer(serializers.ModelSerializer):
     short_name = serializers.SlugField(source='job.short_name', read_only=True)
     affects = serializers.CharField(max_length=500, source='job.affects', read_only=True)
     requirements = serializers.CharField(max_length=500, source='job.requirements', read_only=True)
-    taking_date = serializers.IntegerField(default=CurrentCharacterDaysLivedDefault())
+    taking_date = serializers.IntegerField(default=CurrentCharacterDaysLivedDefault(),
+                                           validators=[NotBiggerThanCharacterDaysLived()])
     finished = serializers.BooleanField(default=False)
 
     class Meta:
@@ -216,7 +238,7 @@ class KnowledgeLevelsSerializer(serializers.ModelSerializer):
                                                  queryset=Knowledge.objects.all(), allow_null=True)
     children = serializers.PrimaryKeyRelatedField(source='knowledge.children', many=True,
                                                   queryset=Knowledge.objects.all(), allow_null=True)
-    level = serializers.IntegerField(default=0)
+    level = serializers.IntegerField(default=0, validators=[from_zero_to_hundred])
 
     class Meta:
         model = KnowledgeLevels

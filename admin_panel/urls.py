@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import patterns, url, include, handler404
 from rest_framework.routers import DefaultRouter
 from admin_panel import views
 
@@ -28,4 +28,5 @@ router.register(r'characters/(?P<character_id>[0-9]+)/knowledges', views.Knowled
 
 urlpatterns = patterns('',
                        url(r'^', include(router.urls)),
-                       url(r'^auth/login/?$', 'rest_framework_jwt.views.obtain_jwt_token'))
+                       url(r'^auth/login/?$', 'rest_framework_jwt.views.obtain_jwt_token'),
+                       url(r'', handler404))

@@ -1,0 +1,40 @@
+<div class="panel panel-info" ng-controller="CharacterKnowledgesController as CharKnowCtrl">
+    <div class="panel-heading"><a ng-click="CharKnowCtrl.body = !CharKnowCtrl.body">Knowledges</a></div>
+    <div class="panel-body" ng-init="CharKnowCtrl.init(vm.user.character)" ng-show="CharKnowCtrl.body">
+        <table class="table table-hover">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Short name</th>
+                <th>Requirements</th>
+                <th>Parents</th>
+                <th>Children</th>
+                <th>Level</th>
+                <th colspan="2"></th>
+            </tr>
+            <tr ng-repeat="knowledge in CharKnowCtrl.knowledges track by $index">
+                <td>{{ knowledge.name }}</td>
+                <td>{{ knowledge.description }}</td>
+                <td>{{ knowledge.type }}</td>
+                <td>{{ knowledge.short_name }}</td>
+                <td>{{ knowledge.requirements }}</td>
+                <td>{{ knowledge.parents }}</td>
+                <td>{{ knowledge.children }}</td>
+                <td>{{ knowledge.level }}</td>
+                <td><input type="text" class="form-control" id="level"
+                           min={{ knowledge.min_value }}
+                                   max={{ knowledge.max_value }}
+                           ng-model="knowledge.level" required/></td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-block"
+                            ng-click="CharKnowCtrl.update($index)">Обновить
+                    </button>
+                </td>
+                <td>
+                    <span ng-class="knowledge.class" ng-show="knowledge.class"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

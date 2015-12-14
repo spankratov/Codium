@@ -14,7 +14,14 @@ class CurrentCharacterDaysLivedDefault(object):
     days_lived = 0
 
     def set_context(self, serializer_field):
-        self.days_lived = serializer_field.context['request'].user.character.days_lived
+        instance = getattr(serializer_field.parent, 'instance', None)
+        request = serializer_field.context['request']
+        if 'character_id' in request.data:
+            self.days_lived = Character.objects.get(id=int(request.data['character_id'])).days_lived
+        elif instance is not None:
+            self.days_lived = instance.character.days_lived
+        else:
+            self.days_lived = 0
 
     def __call__(self):
         return self.days_lived
@@ -159,6 +166,12 @@ class CharacterPropertiesSerializer(serializers.ModelSerializer):
         model = CharacterProperties
         fields = (
             'character_id', 'property', 'id', 'name', 'description', 'type', 'short_name', 'cost', 'purchase_date')
+        validators = [
+            validators.UniqueTogetherValidator(
+                queryset=CharacterProperties.objects.all(),
+                fields=('character', 'property')
+            )
+        ]
 
 
 class CharacterUniversitiesSerializer(serializers.ModelSerializer):
@@ -180,6 +193,12 @@ class CharacterUniversitiesSerializer(serializers.ModelSerializer):
         fields = (
             'character_id', 'university', 'id', 'name', 'description', 'short_name', 'affects', 'requirements',
             'entering_date', 'finished')
+        validators = [
+            validators.UniqueTogetherValidator(
+                queryset=CharacterUniversities.objects.all(),
+                fields=('character', 'university')
+            )
+        ]
 
 
 class CharacterProjectsSerializer(serializers.ModelSerializer):
@@ -203,6 +222,12 @@ class CharacterProjectsSerializer(serializers.ModelSerializer):
         fields = (
             'character_id', 'project', 'id', 'name', 'description', 'type', 'short_name', 'affects', 'requirements',
             'time_spending', 'taking_date', 'finished')
+        validators = [
+            validators.UniqueTogetherValidator(
+                queryset=CharacterProjects.objects.all(),
+                fields=('character', 'project')
+            )
+        ]
 
 
 class CharacterJobsSerializer(serializers.ModelSerializer):
@@ -225,6 +250,12 @@ class CharacterJobsSerializer(serializers.ModelSerializer):
         fields = (
             'character_id', 'job', 'id', 'name', 'description', 'company_name', 'short_name', 'affects', 'requirements',
             'taking_date', 'finished')
+        validators = [
+            validators.UniqueTogetherValidator(
+                queryset=CharacterJobs.objects.all(),
+                fields=('character', 'job')
+            )
+        ]
 
 
 class KnowledgeLevelsSerializer(serializers.ModelSerializer):

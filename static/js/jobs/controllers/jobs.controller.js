@@ -65,19 +65,19 @@
                 vm.showForm = !vm.showForm;
             };
 
-            vm.body = false;
+            vm.body = true;
 
             vm.update = function (index) {
+
+                var copy = angular.copy(vm.jobs[index]);
+
                 CharacterJobs.update({
                     characterId: $routeParams.characterId, jobId: vm.jobs[index].id
                 }, {
-                    finished: vm.jobs[index].finished,
-                    taking_date: vm.jobs[index].taking_date
+                    finished: copy.finished,
+                    taking_date: copy.taking_date
                 }, function (response) {
 
-                    if (vm.newJob.isRequestSent) {
-                        vm.resetNewJob();
-                    }
                     vm.jobs[index].isRequestSent = true;
                     var result = JSON.parse(angular.toJson(response));
                     if (response.$status >= 500) {
@@ -90,6 +90,7 @@
                     } else if (response.$status >= 200) {
                         vm.jobs[index].status = true;
                         vm.jobs[index].message = "Job was updated.";
+                        delete vm.jobs[index].errors;
                     }
                 });
             };

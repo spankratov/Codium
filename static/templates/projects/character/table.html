@@ -1,0 +1,63 @@
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Short name</th>
+        <th>Affects</th>
+        <th>Requirements</th>
+        <th>Time spending</th>
+        <th>Taking date</th>
+        <th>Finished</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="project in CharProjectCtrl.projects track by $index">
+        <td>
+            <input minlength="1" class="form-control" type="text" ng-model="project.name">
+            <span class="alert-danger" ng-repeat="msg in project.errors.name">
+                {{ msg }}
+            </span>
+        </td>
+        <td>{{ project.description }}</td>
+        <td>{{ project.type }}</td>
+        <td>{{ project.short_name }}</td>
+        <td>{{ project.affects }}</td>
+        <td>{{ project.requirements }}</td>
+        <td>{{ project.time_spending }}</td>
+        <td>
+            <input type="text" class="form-control" id="taking_date" ng-model="project.taking_date" required/>
+            <span class="alert-danger" ng-repeat="msg in project.errors.taking_date">
+                {{ msg }}
+            </span>
+        </td>
+        <td><input type="checkbox" ng-model="project.finished"></td>
+        <td style="width: 140px">
+            <div class="block">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary"
+                            ng-click="CharProjectCtrl.update($index)">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                    <button type="button" ng-show="project.isRequestSent" class="btn btn-default"
+                            ng-click="CharProjectCtrl.resetProject($index)">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            ng-click="CharProjectCtrl.delete($index)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            </div>
+            <span class="alert-success" ng-show="project.status">
+                {{ project.message }}
+            </span>
+            <span class="alert-danger" ng-show="!project.status">
+                {{ project.message }}
+            </span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+

@@ -27,29 +27,29 @@
         <td>
             <input type="checkbox" id="finish" ng-checked="job.finished"/>
         </td>
-        <td>
-            <button type="button" class="btn btn-primary btn-block"
-                    ng-click="CharJobCtrl.update($index)">
-                <span class="glyphicon glyphicon-floppy-disk"></span>
-            </button>
+        <td style="width: 140px">
+            <div class="block">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary"
+                            ng-click="CharJobCtrl.update($index)">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                    <button type="button" ng-show="job.isRequestSent" class="btn btn-default"
+                            ng-click="CharJobCtrl.resetJob($index)">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            ng-click="CharJobCtrl.delete($index)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            </div>
             <span class="alert-success" ng-show="job.status">
                 {{ job.message }}
             </span>
             <span class="alert-danger" ng-show="!job.status">
                 {{ job.message }}
             </span>
-        </td>
-        <td>
-            <button type="button" ng-show="job.isRequestSent" class="btn btn-default btn-block"
-                    ng-click="CharJobCtrl.resetJob($index)">
-                <span class="glyphicon glyphicon-refresh"></span>
-            </button>
-        </td>
-        <td>
-            <button type="button" class="btn btn-danger btn-block"
-                    ng-click="CharJobCtrl.delete($index)">
-                <span class="glyphicon glyphicon-trash"></span>
-            </button>
         </td>
     </tr>
 </table>

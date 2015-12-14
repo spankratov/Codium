@@ -36,6 +36,10 @@
                 controller: 'JobsController',
                 controllerAs: 'vm',
                 templateUrl: '/static/templates/jobs/content/index.html'
+            }).when('/knowledges', {
+                controller: 'KnowledgesController',
+                controllerAs: 'vm',
+                templateUrl: '/static/templates/knowledges/content/index.html'
             }).when('/users', {
                 controller: 'UsersController',
                 controllerAs: 'vm',

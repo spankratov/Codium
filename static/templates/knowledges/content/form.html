@@ -1,0 +1,67 @@
+<span class="glyphicon glyphicon-remove pull-right" ng-click="vm.currentKnowledge = null"></span>
+<h2 class="text-center">Knowledge</h2>
+<form class="form-horizontal" role="form" ng-submit="vm.updateKnowledge()">
+    <div class="form-group">
+        <label for="name" class="col-sm-3 control-label">Name</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="name" placeholder="Name" ng-model="vm.currentKnowledge.name" required
+                   value="name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description" class="col-sm-3 control-label">Description</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="description" placeholder="Name" ng-model="vm.currentKnowledge.description" required
+                   value="description">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="type" class="col-sm-3 control-label">Type</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="type" placeholder="Type" ng-model="vm.currentKnowledge.type" required
+                   value="type">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="short_name" class="col-sm-3 control-label">Short name</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="short_name" placeholder="Short name"
+                   ng-model="vm.currentKnowledge.short_name" required value="short name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="requirements" class="col-sm-3 control-label">Requirements</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="requirements" placeholder="Requirements" ng-model="vm.currentKnowledge.requirements"
+                   required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="parents" class="col-sm-3 control-label">Parents</label>
+
+        <div class="col-sm-9">
+            <select ng-model="vm.currentKnowledge.parents" class="form-control" id="parents"
+                                ng-options="knowledge.id as knowledge.name for knowledge in vm.knowledges" multiple>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="children" class="col-sm-3 control-label">Children</label>
+
+        <div class="col-sm-9">
+            <select ng-model="vm.currentKnowledge.children" class="form-control" id="children"
+                                ng-options="knowledge.id as knowledge.name for knowledge in vm.knowledges" multiple>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default">Сохранить</button>
+        </div>
+    </div>
+</form>

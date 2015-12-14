@@ -12,6 +12,7 @@
         'application.universities',
         'application.projects',
         'application.jobs',
+        'application.knowledges',
         'application.users',
         'application.characters'
     ]);

@@ -73,13 +73,33 @@
                 }, {
                     finished: vm.jobs[index].finished,
                     taking_date: vm.jobs[index].taking_date
-                }).$promise.then(function (response) {
-                    if (response.$status == 200) {
-                        vm.jobs[index].class = "glyphicon glyphicon-ok";
-                    } else {
-                        vm.jobs[index].class = "glyphicon glyphicon-remove";
+                }, function (response) {
+
+                    if (vm.newJob.isRequestSent) {
+                        vm.resetNewJob();
+                    }
+                    vm.jobs[index].isRequestSent = true;
+                    var result = JSON.parse(angular.toJson(response));
+                    if (response.$status >= 500) {
+                        vm.jobs[index].status = false;
+                        vm.jobs[index].message = "Server Error";
+                    } else if (response.$status >= 400) {
+                        vm.jobs[index].status = false;
+                        vm.jobs[index].errors = result;
+                        vm.jobs[index].message = "Job was NOT updated.";
+                    } else if (response.$status >= 200) {
+                        vm.jobs[index].status = true;
+                        vm.jobs[index].message = "Job was updated.";
                     }
                 });
+            };
+
+            vm.resetJob = function (index) {
+                CharacterJobs.get({
+                    characterId: $routeParams.characterId, jobId: vm.jobs[index].id
+                }, function (response) {
+                    vm.jobs[index] = JSON.parse(angular.toJson(response));
+                })
             };
 
             vm.newJob = {};

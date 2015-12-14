@@ -8,7 +8,7 @@
         <th>Requirements</th>
         <th>Taking date</th>
         <th>Finish date</th>
-        <th colspan="2"></th>
+        <th colspan="3"></th>
     </tr>
     <tr ng-repeat="job in CharJobCtrl.jobs track by $index">
         <td>{{ job.name }}</td>
@@ -17,20 +17,39 @@
         <td>{{ job.short_name }}</td>
         <td>{{ job.affects }}</td>
         <td>{{ job.requirements }}</td>
-        <td><input type="text" class="form-control" id="level" ng-model="job.taking_date" required/></td>
-        <td><input type="checkbox" id="finish" ng-checked="job.finished"/></td>
+        <td>
+            <input type="text" class="form-control" id="level" ng-model="job.taking_date" required/>
+            <span class="alert-danger" ng-repeat="msg in job.errors.taking_date">
+                {{ msg }}
+            </span>
+        </td>
+
+        <td>
+            <input type="checkbox" id="finish" ng-checked="job.finished"/>
+        </td>
         <td>
             <button type="button" class="btn btn-primary btn-block"
-                    ng-click="CharJobCtrl.update($index)">Обновить
+                    ng-click="CharJobCtrl.update($index)">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+            </button>
+            <span class="alert-success" ng-show="job.status">
+                {{ job.message }}
+            </span>
+            <span class="alert-danger" ng-show="!job.status">
+                {{ job.message }}
+            </span>
+        </td>
+        <td>
+            <button type="button" ng-show="job.isRequestSent" class="btn btn-default btn-block"
+                    ng-click="CharJobCtrl.resetJob($index)">
+                <span class="glyphicon glyphicon-refresh"></span>
             </button>
         </td>
         <td>
             <button type="button" class="btn btn-danger btn-block"
-                    ng-click="CharJobCtrl.delete($index)">Удалить
+                    ng-click="CharJobCtrl.delete($index)">
+                <span class="glyphicon glyphicon-trash"></span>
             </button>
-        </td>
-        <td>
-            <span ng-class="job.class" ng-show="job.class"></span>
         </td>
     </tr>
 </table>

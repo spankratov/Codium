@@ -39,20 +39,29 @@
 
             vm.attributes = CharacterAttributes.query({characterId: $routeParams.characterId});
 
-            vm.body = false;
+            vm.body = true;
 
             vm.update = function (index) {
+                vm.attributes[index].copyValue = angular.copy(vm.attributes[index]);
                 CharacterAttributes.update({
-                    characterId: vm.characterId, attributeId: vm.attributes[index].id
+                    characterId: $routeParams.characterId, attributeId: vm.attributes[index].id
                 }, vm.attributes[index]).$promise.then(function (response) {
+                    vm.attributes[index].isRequestSent = true;
                     if (response.$status == 200) {
-                        vm.attributes[index].is_updated = true;
-                        vm.attributes[index].class = "glyphicon glyphicon-ok";
+                        vm.attributes[index].status = true;
+                        vm.attributes[index].result = "Attribute was updated."
                     } else {
-                        vm.attributes[index].is_updated = true;
-                        vm.attributes[index].class = "glyphicon glyphicon-remove";
+                        vm.attributes[index].status = false;
+                        vm.attributes[index].result = JSON.parse(angular.toJson(response));
                     }
                 });
+            };
+            vm.reset = function (index) {
+                CharacterAttributes.get({
+                    characterId: $routeParams.characterId, attributeId: vm.attributes[index].id
+                }, function (response) {
+                    vm.attributes[index] = JSON.parse(angular.toJson(response));
+                })
             }
 
 

@@ -20,14 +20,26 @@
                 <td><input type="text" class="form-control" id="level"
                            min={{ attribute.min_value }}
                                    max={{ attribute.max_value }}
-                           ng-model="attribute.level" required/></td>
+                           ng-model="attribute.level" required/>
+                    <span class="alert-danger" ng-show="attribute.isRequestSent && !attribute.status">
+                        <span ng-repeat="msg in attribute.result.level">
+                            {{ msg }}
+                        </span>
+                    </span>
+                    <span class="alert-success" ng-show="attribute.isRequestSent && attribute.status">
+                        {{ attribute.result }}
+                    </span>
+                </td>
                 <td>
                     <button type="button" class="btn btn-primary btn-block"
                             ng-click="CharAttrCtrl.update($index)">Обновить
                     </button>
                 </td>
                 <td>
-                    <span ng-class="attribute.class" ng-show="attribute.class"></span>
+                    <button type="button" class="btn btn-default btn-block"
+                            ng-click="CharAttrCtrl.reset($index)">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
                 </td>
             </tr>
         </table>

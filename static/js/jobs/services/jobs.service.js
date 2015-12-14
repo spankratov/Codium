@@ -33,6 +33,16 @@
                 query: {
                     method: 'GET',
                     isArray: true
+                },
+                save: {
+                    method: 'POST',
+                    interceptor: {
+                        response: function (response) {
+                            var result = response.resource;
+                            result.$status = response.status;
+                            return result;
+                        }
+                    }
                 }
             },
             {

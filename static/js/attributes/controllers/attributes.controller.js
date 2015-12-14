@@ -39,7 +39,7 @@
 
             vm.attributes = CharacterAttributes.query({characterId: $routeParams.characterId});
 
-            vm.body = true;
+            vm.body = false;
 
             vm.update = function (index) {
                 vm.attributes[index].copyValue = angular.copy(vm.attributes[index]);

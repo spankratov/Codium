@@ -1,23 +1,29 @@
 <div class="col-sm-4">
     <div class="panel panel-success">
-        <div class="panel-heading">Добавить Job</div>
-        <div class="panel-body">
+        <div class="panel-heading" ng-click="CharJobCtrl.toggleForm()"><a>Добавить Job</a></div>
+        <div class="panel-body" ng-show="CharJobCtrl.showForm">
             <form class="form-horizontal" role="form" ng-submit="CharJobCtrl.add()">
                 <div class="form-group">
                     <label for="job" class="col-sm-4 control-label">Job</label>
 
                     <div class="col-sm-8">
-                        <select ng-model="CharJobCtrl.newJob.job" class="form-control" id="job"
-                                ng-options="job.id as job.name for job in CharJobCtrl.allJobs">
+                        <select required ng-model="CharJobCtrl.newJob.job" class="form-control" id="job"
+                                ng-options="job.id as job.name for job in CharJobCtrl.availableJobs">
                         </select>
+                        <span ng-repeat="error_message in CharJobCtrl.newJob.errors.job" class="alert-danger">
+                            {{ error_message }}
+                        </span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-4 control-label" for="taking_date">Taking date</label>
 
                     <div class="col-sm-8">
-                        <input type="password" class="form-control"
+                        <input required type="text" class="form-control"
                                id="taking_date" placeholder="Taking date" ng-model="CharJobCtrl.newJob.taking_date">
+                        <span ng-repeat="error_message in CharJobCtrl.newJob.errors.taking_date" class="alert-danger">
+                            {{ error_message }}
+                        </span>
                     </div>
 
                 </div>
@@ -26,14 +32,30 @@
 
                     <div class="col-sm-1 control-label">
                         <input type="checkbox" id="finished" ng-model="CharJobCtrl.newJob.finished">
+                        <span ng-repeat="error_message in CharJobCtrl.newJob.errors.finished" class="alert-danger">
+                            {{ error_message }}
+                        </span>
                     </div>
-
 
                 </div>
 
                 <div class="form-group">
-                    <div class="col-sm-offset-6 col-sm-6">
-                        <button type="submit" class="btn btn-block btn-success">Сохранить</button>
+                    <div class="col-sm-6">
+                        <span class="alert-success" ng-if="CharJobCtrl.newJob.status">
+                            {{ CharJobCtrl.newJob.message }}
+                        </span>
+                        <span class="alert-danger" ng-if="!CharJobCtrl.newJob.status">
+                            {{ CharJobCtrl.newJob.message }}
+                        </span>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-block btn-success">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                        </button>
+                        <button type="button" class="btn btn-block btn-default"
+                                ng-show="CharJobCtrl.newJob.isRequestSent" ng-click="CharJobCtrl.resetNewJob()">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
                     </div>
                 </div>
             </form>

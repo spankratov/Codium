@@ -37,7 +37,7 @@
                     </button>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-default btn-block"
+                    <button ng-show="attribute.isRequestSent && !attribute.status" type="button" class="btn btn-default btn-block"
                             ng-click="CharAttrCtrl.reset($index)">
                         <span class="glyphicon glyphicon-refresh"></span>
                     </button>

@@ -1,5 +1,5 @@
 <div class="panel panel-info" ng-controller="CharacterPropertiesController as CharPropCtrl">
-    <div class="panel-heading"><a ng-click="CharPropCtrl.body = !CharPropCtrl.body">Properties</a></div>
+    <div class="panel-heading" style="cursor: pointer" ng-click="CharPropCtrl.body = !CharPropCtrl.body">Properties</div>
     <div class="panel-body" ng-show="CharPropCtrl.body">
         <div ng-include="'/static/templates/properties/character/new.html'"></div>
         <div ng-include="'/static/templates/properties/character/table.html'"></div>

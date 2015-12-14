@@ -1,0 +1,54 @@
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Short name</th>
+        <th>Affects</th>
+        <th>Requirements</th>
+        <th>Entering date</th>
+        <th>Finished</th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="university in CharUniverCtrl.universities track by $index">
+        <td>{{ university.name }}</td>
+        <td>{{ university.description }}</td>
+        <td>{{ university.short_name }}</td>
+        <td>{{ university.affects }}</td>
+        <td>{{ university.requirements }}</td>
+        <td>
+            <input type="text" class="form-control" id="entering_date" ng-model="university.entering_date" required/>
+            <span class="alert-danger" ng-repeat="msg in university.errors.entering_date">
+                {{ msg }}
+            </span>
+        </td>
+        <td><input type="checkbox" ng-model="university.finished"></td>
+        <td style="width: 140px">
+            <div class="block">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary"
+                            ng-click="CharUniverCtrl.update($index)">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                    <button type="button" ng-show="university.isRequestSent" class="btn btn-default"
+                            ng-click="CharUniverCtrl.resetUniversity($index)">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            ng-click="CharUniverCtrl.delete($index)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            </div>
+            <span class="alert-success" ng-show="university.status">
+                {{ university.message }}
+            </span>
+            <span class="alert-danger" ng-show="!university.status">
+                {{ university.message }}
+            </span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+

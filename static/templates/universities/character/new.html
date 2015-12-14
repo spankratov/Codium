@@ -1,0 +1,69 @@
+<div class="col-sm-4">
+    <div class="panel panel-success">
+        <div class="panel-heading" ng-click="CharUniverCtrl.toggleForm()"><a>Добавить Univer</a></div>
+        <div class="panel-body" ng-show="CharUniverCtrl.showForm">
+            <form class="form-horizontal" role="form" ng-submit="CharUniverCtrl.add()">
+                <div class="form-group">
+                    <label for="university" class="col-sm-4 control-label">University</label>
+
+                    <div class="col-sm-8">
+                        <select required ng-model="CharUniverCtrl.newUniversity.university" class="form-control" id="university"
+                                ng-options="university.id as university.name for university in CharUniverCtrl.availableUniversities">
+                        </select>
+                        <span ng-repeat="error_message in CharUniverCtrl.newUniversity.errors.university"
+                              class="alert-danger">
+                            {{ error_message }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="entering_date">Entering date</label>
+
+                    <div class="col-sm-8">
+                        <input required type="text" class="form-control"
+                               id="entering_date" placeholder="Entering date"
+                               ng-model="CharUniverCtrl.newUniversity.entering_date">
+                        <span ng-repeat="error_message in CharUniverCtrl.newUniversity.errors.entering_date"
+                              class="alert-danger">
+                            {{ error_message }}
+                        </span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label" for="finished">Finished</label>
+
+                    <div class="col-sm-1 control-label">
+                        <input type="checkbox" id="finished" ng-model="CharUniverCtrl.newUniversity.finished">
+                        <span ng-repeat="error_message in CharUniverCtrl.newUniversity.errors.finished"
+                              class="alert-danger">
+                            {{ error_message }}
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <span class="alert-success" ng-if="CharUniverCtrl.newUniversity.status">
+                            {{ CharUniverCtrl.newUniversity.message }}
+                        </span>
+                        <span class="alert-danger" ng-if="!CharUniverCtrl.newUniversity.status">
+                            {{ CharUniverCtrl.newUniversity.message }}
+                        </span>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-block btn-success">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                        </button>
+                        <button type="button" class="btn btn-block btn-default"
+                                ng-show="CharUniverCtrl.newUniversity.isRequestSent"
+                                ng-click="CharUniverCtrl.resetNewUniversity()">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

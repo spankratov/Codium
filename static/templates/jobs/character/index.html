@@ -1,5 +1,5 @@
 <div class="panel panel-info" ng-controller="CharacterJobsController as CharJobCtrl">
-    <div class="panel-heading"><a ng-click="CharJobCtrl.body = !CharJobCtrl.body">Jobs</a></div>
+    <div class="panel-heading" style="cursor: pointer" ng-click="CharJobCtrl.body = !CharJobCtrl.body">Jobs</div>
     <div class="panel-body" ng-show="CharJobCtrl.body">
         <div ng-include="'/static/templates/jobs/character/new.html'"></div>
         <div ng-include="'/static/templates/jobs/character/table.html'"></div>

@@ -1,5 +1,5 @@
 <div class="panel panel-info" ng-controller="CharacterProjectsController as CharProjectCtrl">
-    <div class="panel-heading"><a ng-click="CharProjectCtrl.body = !CharProjectCtrl.body">Projects</a></div>
+    <div class="panel-heading" style="cursor: pointer" ng-click="CharProjectCtrl.body = !CharProjectCtrl.body">Projects</div>
     <div class="panel-body" ng-show="CharProjectCtrl.body">
         <div ng-include="'/static/templates/projects/character/new.html'"></div>
         <div ng-include="'/static/templates/projects/character/table.html'"></div>

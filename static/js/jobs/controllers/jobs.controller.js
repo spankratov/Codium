@@ -59,13 +59,13 @@
             });
 
 
-            vm.showForm = true;
+            vm.showForm = false;
 
             vm.toggleForm = function () {
                 vm.showForm = !vm.showForm;
             };
 
-            vm.body = true;
+            vm.body = false;
 
             vm.update = function (index) {
                 CharacterJobs.update({

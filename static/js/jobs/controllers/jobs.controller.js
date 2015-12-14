@@ -108,8 +108,6 @@
             };
 
             vm.deleteAvailableJob = function (id) {
-                console.log(vm.availableJobs);
-                console.log(id);
                 for (var i = 0; i < vm.availableJobs.length; i++) {
                     if (vm.availableJobs[i].id == id) {
                         vm.availableJobs.splice(i, 1);
@@ -156,8 +154,6 @@
                 vm.jobs.splice(index, 1);
                 CharacterJobs.delete({characterId: $routeParams.characterId, jobId: id});
             };
-
-
         });
 
 })();

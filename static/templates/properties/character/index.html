@@ -1,35 +1,7 @@
-<div class="panel panel-info" ng-controller="CharacterAttributesController as CharAttrCtrl">
-    <div class="panel-heading"><a ng-click="CharAttrCtrl.body = !CharAttrCtrl.body">Properties</a></div>
-    <div class="panel-body" ng-init="CharAttrCtrl.init(vm.user.character)" ng-show="CharAttrCtrl.body">
-        <table class="table table-hover">
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Type</th>
-                <th>Short name</th>
-                <th>Cost</th>
-                <th>Purchase date</th>
-                <th colspan="2"></th>
-            </tr>
-            <tr ng-repeat="attribute in CharAttrCtrl.attributes track by $index">
-                <td>{{ attribute.name }}</td>
-                <td>{{ attribute.short_name }}</td>
-                <td>{{ attribute.default }}</td>
-                <td>{{ attribute.min_value }}</td>
-                <td>{{ attribute.max_value }}</td>
-                <td><input type="text" class="form-control" id="level"
-                           min={{ attribute.min_value }}
-                                   max={{ attribute.max_value }}
-                           ng-model="attribute.level" required/></td>
-                <td>
-                    <button type="button" class="btn btn-primary btn-block"
-                            ng-click="CharAttrCtrl.update($index)">Обновить
-                    </button>
-                </td>
-                <td>
-                    <span ng-class="attribute.class" ng-show="attribute.class"></span>
-                </td>
-            </tr>
-        </table>
+<div class="panel panel-info" ng-controller="CharacterPropertiesController as CharPropCtrl">
+    <div class="panel-heading"><a ng-click="CharPropCtrl.body = !CharPropCtrl.body">Properties</a></div>
+    <div class="panel-body" ng-show="CharPropCtrl.body">
+        <div ng-include="'/static/templates/properties/character/new.html'"></div>
+        <div ng-include="'/static/templates/properties/character/table.html'"></div>
     </div>
 </div>

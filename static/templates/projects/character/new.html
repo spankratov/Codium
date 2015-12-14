@@ -10,7 +10,8 @@
                         <select required ng-model="CharProjectCtrl.newProject.project" class="form-control" id="project"
                                 ng-options="project.id as project.short_name for project in CharProjectCtrl.availableProjects">
                         </select>
-                        <span ng-repeat="error_message in CharProjectCtrl.newProject.errors.project" class="alert-danger">
+                        <span ng-repeat="error_message in CharProjectCtrl.newProject.errors.project"
+                              class="alert-danger">
                             {{ error_message }}
                         </span>
                     </div>
@@ -19,7 +20,8 @@
                     <label for="project" class="col-sm-4 control-label">Name</label>
 
                     <div class="col-sm-8">
-                        <input class="form-control" placeholder="Name" ng-model="CharProjectCtrl.newProject.name" required>
+                        <textarea style="resize: vertical" class="form-control" placeholder="Name" ng-model="CharProjectCtrl.newProject.name"
+                                  required></textarea>
                         <span ng-repeat="error_message in CharProjectCtrl.newProject.errors.name" class="alert-danger">
                             {{ error_message }}
                         </span>
@@ -30,8 +32,10 @@
 
                     <div class="col-sm-8">
                         <input required type="text" class="form-control"
-                               id="taking_date" placeholder="Taking date" ng-model="CharProjectCtrl.newProject.taking_date">
-                        <span ng-repeat="error_message in CharProjectCtrl.newProject.errors.taking_date" class="alert-danger">
+                               id="taking_date" placeholder="Taking date"
+                               ng-model="CharProjectCtrl.newProject.taking_date">
+                        <span ng-repeat="error_message in CharProjectCtrl.newProject.errors.taking_date"
+                              class="alert-danger">
                             {{ error_message }}
                         </span>
                     </div>
@@ -42,7 +46,8 @@
 
                     <div class="col-sm-1 control-label">
                         <input type="checkbox" id="finished" ng-model="CharProjectCtrl.newProject.finished">
-                        <span ng-repeat="error_message in CharProjectCtrl.newProject.errors.finished" class="alert-danger">
+                        <span ng-repeat="error_message in CharProjectCtrl.newProject.errors.finished"
+                              class="alert-danger">
                             {{ error_message }}
                         </span>
                     </div>
@@ -63,7 +68,8 @@
                             <span class="glyphicon glyphicon-floppy-disk"></span>
                         </button>
                         <button type="button" class="btn btn-block btn-default"
-                                ng-show="CharProjectCtrl.newProject.isRequestSent" ng-click="CharProjectCtrl.resetNewProject()">
+                                ng-show="CharProjectCtrl.newProject.isRequestSent"
+                                ng-click="CharProjectCtrl.resetNewProject()">
                             <span class="glyphicon glyphicon-refresh"></span>
                         </button>
                     </div>

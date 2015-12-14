@@ -1,0 +1,50 @@
+<table class="table table-hover">
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Short name</th>
+        <th>Cost</th>
+        <th>Purchase date</th>
+        <th colspan="2"></th>
+    </tr>
+    <tr ng-repeat="property in CharPropCtrl.properties track by $index">
+        <td>{{ property.name }}</td>
+        <td>{{ property.description }}</td>
+        <td>{{ property.type }}</td>
+        <td>{{ property.short_name }}</td>
+        <td>{{ property.cost }}</td>
+        <td>
+            <input type="text" class="form-control" id="purchase_date" ng-model="property.purchase_date"
+                   required/>
+            <span class="alert-danger" ng-repeat="msg in property.errors.purchase_date">
+                {{ msg }}
+            </span>
+        </td>
+        <td style="width: 140px">
+            <div class="block">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary"
+                            ng-click="CharPropCtrl.update($index)">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                    <button type="button" ng-show="property.isRequestSent" class="btn btn-default"
+                            ng-click="CharPropCtrl.resetProperty($index)">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            ng-click="CharPropCtrl.delete($index)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            </div>
+            <span class="alert-success" ng-show="property.status">
+                {{ property.message }}
+            </span>
+            <span class="alert-danger" ng-show="!property.status">
+                {{ property.message }}
+            </span>
+            </div>
+        </td>
+    </tr>
+</table>

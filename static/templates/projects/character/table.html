@@ -13,7 +13,7 @@
     </tr>
     <tr ng-repeat="project in CharProjectCtrl.projects track by $index">
         <td>
-            <input minlength="1" class="form-control" type="text" ng-model="project.name">
+            <textarea minlength="1" style="resize: vertical" class="form-control" placeholder="Name" ng-model="project.name"></textarea>
             <span class="alert-danger" ng-repeat="msg in project.errors.name">
                 {{ msg }}
             </span>

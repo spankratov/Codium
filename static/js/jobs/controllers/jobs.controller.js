@@ -65,7 +65,7 @@
                 vm.showForm = !vm.showForm;
             };
 
-            vm.body = true;
+            vm.body = false;
 
             vm.update = function (index) {
 

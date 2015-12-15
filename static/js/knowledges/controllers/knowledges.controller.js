@@ -51,7 +51,7 @@
             vm.knowledge = null;
 
             vm.setCurrentKnowledge = function (knowledge) {
-                vm.knowledge = (JSON.parse(JSON.stringify(knowledge)))
+                vm.knowledge = knowledge;
             };
 
             vm.updateKnowledge = function () {
@@ -121,8 +121,6 @@
                     vm.knowledges[index] = JSON.parse(angular.toJson(response));
                 })
             };
-
-
         })
 
 })

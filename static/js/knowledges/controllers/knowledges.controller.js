@@ -1,16 +1,45 @@
 (function () {
     'use strict';
 
+    var update = function (obj, resource, params, data) {
+        resource.update(params, data,
+            function (response) {
+                obj.isRequestSent = true;
+                var result = JSON.parse(angular.toJson(response));
+                if (response.$status >= 500) {
+                    obj.status = false;
+                    obj.message = "Ошибка на сервере";
+                } else if (response.$status >= 400) {
+                    obj.status = false;
+                    obj.errors = result;
+                    obj.message = "Изменения не сохранены.";
+                } else if (response.$status >= 200) {
+                    obj.status = true;
+                    obj.message = "Изменения сохранены";
+                    delete obj.errors;
+                }
+            });
+    };
+
     angular.module('application.knowledges.controllers')
         .controller('KnowledgesController', function (Knowledges, $window) {
             var vm = this;
-            vm.knowledges = Knowledges.query();
+            Knowledges.query(function (response) {
+                vm.knowledges = JSON.parse(angular.toJson(response));
+            });
 
             vm.new = {};
 
             vm.saveKnowledge = function () {
-                var knowledge = Knowledges.save(vm.new);
-                $window.location = '/knowledges';
+                if (!vm.new.hasOwnProperty('parents')) {
+                    vm.new.parents = [];
+                }
+                if (!vm.new.hasOwnProperty('children')) {
+                    vm.new.children = [];
+                }
+                Knowledges.save(vm.new, function (response) {
+                    vm.knowledges.push(JSON.parse(angular.toJson(response)));
+                });
             };
 
             vm.deleteKnowledge = function (index) {
@@ -19,16 +48,29 @@
                 Knowledges.delete({knowledgeId: knowledgeId});
             };
 
-            vm.currentKnowledge = null;
+            vm.knowledge = null;
 
             vm.setCurrentKnowledge = function (knowledge) {
-                vm.currentKnowledge = (JSON.parse(JSON.stringify(knowledge)))
+                vm.knowledge = (JSON.parse(JSON.stringify(knowledge)))
             };
 
             vm.updateKnowledge = function () {
-                Knowledges.update({knowledgeId: vm.currentKnowledge.id}, vm.currentKnowledge);
-                $window.location = "/knowledges"
-            }
+                if (!vm.knowledge.hasOwnProperty('parents')) {
+                    vm.knowledge.parents = [];
+                }
+                if (!vm.knowledge.hasOwnProperty('children')) {
+                    vm.knowledge.children = [];
+                }
+                update(vm.knowledge, Knowledges, {knowledgeId: vm.knowledge.id}, vm.knowledge);
+            };
+
+            vm.resetKnowledge = function () {
+                Knowledges.get({
+                    knowledgeId: vm.knowledge.id
+                }, function (response) {
+                    vm.knowledge = JSON.parse(angular.toJson(response));
+                })
+            };
         });
 
     angular.module('application.knowledges.controllers')
@@ -43,49 +85,16 @@
 
             CharacterKnowledges.query({characterId: $routeParams.characterId}, function (response) {
                 vm.knowledges = JSON.parse(angular.toJson(response));
-                for (var i in vm.knowledges) {
-                    vm.addExtrFields(i);
-                }
             });
 
-            vm.addExtrFields = function (i) {
-                vm.knowledges[i].extParents = [];
-                vm.knowledges[i].extChildren = [];
-                for (var j in vm.allKnowledges) {
-
-                    for (var k in vm.knowledges[i].parents) {
-                        if (vm.knowledges[i].parents[k] == vm.allKnowledges[j].id) {
-                            vm.knowledges[i].extParents.push(vm.allKnowledges[j]);
-                        }
-                    }
-                    for (var k in vm.knowledges[i].children) {
-                        if (vm.knowledges[i].children[k] == vm.allKnowledges[j].id) {
-                            vm.knowledges[i].extChildren.push(vm.allKnowledges[j]);
-                        }
-                    }
-                }
-            };
-
-            vm.body = true;
+            vm.body = false;
 
             vm.update = function (index) {
-
-                var copy = angular.copy(vm.knowledges[index]);
-
-                var newParents = [];
-                var newChildren = [];
-
-                for (var i in copy.extChildren) {
-                    newChildren.push(copy.extChildren[i])
-                }
-                for (var i in copy.extParents) {
-                    newParents.push(copy.extParents[i])
-                }
 
                 CharacterKnowledges.update({
                     characterId: $routeParams.characterId, knowledgeId: vm.knowledges[index].id
                 }, {
-                    level: copy.level
+                    level: vm.knowledges[index].level
                 }, function (response) {
 
                     vm.knowledges[index].isRequestSent = true;
@@ -110,7 +119,6 @@
                     characterId: $routeParams.characterId, knowledgeId: vm.knowledges[index].id
                 }, function (response) {
                     vm.knowledges[index] = JSON.parse(angular.toJson(response));
-                    vm.addExtrFields(index);
                 })
             };
 

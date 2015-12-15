@@ -20,12 +20,12 @@
                 <td>{{ knowledge.short_name }}</td>
                 <td>{{ knowledge.requirements }}</td>
                 <td>
-                    <select disabled class="form-control" multiple ng-model="knowledge.extParents"
-                            ng-options="knowledge.name for knowledge in CharKnowCtrl.allKnowledges"></select>
+                    <select disabled class="form-control" multiple ng-model="knowledge.parents"
+                            ng-options="knowledge.id as knowledge.name for knowledge in CharKnowCtrl.allKnowledges"></select>
                 </td>
                 <td>
-                    <select disabled class="form-control" multiple ng-model="knowledge.extChildren"
-                            ng-options="knowledge.name for knowledge in CharKnowCtrl.allKnowledges"></select>
+                    <select disabled class="form-control" multiple ng-model="knowledge.children"
+                            ng-options="knowledge.id as knowledge.name for knowledge in CharKnowCtrl.allKnowledges"></select>
                 </td>
                 <td>
                     <input type="text" class="form-control" id="level"

@@ -9,14 +9,32 @@
                 <div class="col-sm-9">
                     <input type="text" class="form-control" id="username"
                            placeholder="Name" ng-model="vm.user.username" required>
+                    <span class="alert-danger" ng-repeat="msg in vm.user.errors.username">
+                        {{ msg }}
+                    </span>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-4">
-                    <button type="submit" class="btn btn-block btn-primary">Сохранить</button>
+                <div class="col-sm-offset-3 col-sm-3">
+                    <button type="submit" class="btn btn-block btn-primary">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                    <span class="alert-success text-center" ng-show="vm.user.status">
+                        {{ vm.user.message }}
+                    </span>
+                    <span class="alert-danger text-center" ng-show="!vm.user.status">
+                        {{ vm.user.message }}
+                    </span>
                 </div>
-                <div class="col-sm-offset-1 col-sm-4">
-                    <button type="button" ng-click="vm.userDelete()" class="btn btn-block btn-danger">Удалить</button>
+                <div class="col-sm-3" ng-show="vm.user.isRequestSent">
+                    <button type="button" class="btn btn-block btn-default" ng-click="vm.resetUser()">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" ng-click="vm.userDelete()" class="btn btn-block btn-danger">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
                 </div>
             </div>
         </form>

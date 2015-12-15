@@ -6,7 +6,16 @@
         return $resource('api/v1/users/:userId/', null,
             {
                 update: {method: 'PUT'},
-                partial_update: {method: 'PATCH'},
+                partial_update: {
+                    method: 'PATCH',
+                    interceptor: {
+                        response: function (response) {
+                            var result = response.resource;
+                            result.$status = response.status;
+                            return result;
+                        }
+                    }
+                },
                 query: {
                     method: 'GET',
                     isArray: true

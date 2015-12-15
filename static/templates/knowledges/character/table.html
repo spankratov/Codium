@@ -17,7 +17,11 @@
         <td>{{ knowledge.type }}</td>
         <td>{{ knowledge.short_name }}</td>
         <td>{{ knowledge.requirements }}</td>
-        <td>{{ knowledge.parents }}</td>
+        <td>
+            <div class="form-group" ng-repeat="parent in knowledge">
+                <input type="checkbox">{{ parent }}
+            </div>
+        </td>
         <td>{{ knowledge.children }}</td>
         <td>{{ knowledge.level }}</td>
         <td>

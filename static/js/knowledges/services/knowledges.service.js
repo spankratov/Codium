@@ -21,7 +21,7 @@
         return $resource('api/v1/characters/:characterId/knowledges/:knowledgeId/', null,
             {
                 'update': {
-                    method: 'PUT',
+                    method: 'PATCH',
                     interceptor: {
                         response: function (response) {
                             var result = response.resource;

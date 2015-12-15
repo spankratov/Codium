@@ -1,5 +1,5 @@
 <div class="panel panel-info" ng-controller="CharacterKnowledgesController as CharKnowCtrl">
-    <div class="panel-heading"><a ng-click="CharKnowCtrl.body = !CharKnowCtrl.body">Knowledges</a></div>
+    <div class="panel-heading" ng-click="CharKnowCtrl.body = !CharKnowCtrl.body">Knowledges</div>
     <div class="panel-body" ng-init="CharKnowCtrl.init(vm.user.character)" ng-show="CharKnowCtrl.body">
         <table class="table table-hover">
             <tr>
@@ -19,21 +19,42 @@
                 <td>{{ knowledge.type }}</td>
                 <td>{{ knowledge.short_name }}</td>
                 <td>{{ knowledge.requirements }}</td>
-                <td>{{ knowledge.parents }}</td>
-                <td>{{ knowledge.children }}</td>
-                <td>{{ knowledge.level }}</td>
-                <td><input type="text" class="form-control" id="level"
-                           min={{ knowledge.min_value }}
-                                   max={{ knowledge.max_value }}
-                           ng-model="knowledge.level" required/></td>
                 <td>
-                    <button type="button" class="btn btn-primary btn-block"
-                            ng-click="CharKnowCtrl.update($index)">Обновить
-                    </button>
+                    <select disabled class="form-control" multiple ng-model="knowledge.extParents"
+                            ng-options="knowledge.name for knowledge in CharKnowCtrl.allKnowledges"></select>
                 </td>
                 <td>
-                    <span ng-class="knowledge.class" ng-show="knowledge.class"></span>
+                    <select disabled class="form-control" multiple ng-model="knowledge.extChildren"
+                            ng-options="knowledge.name for knowledge in CharKnowCtrl.allKnowledges"></select>
                 </td>
+                <td>
+                    <input type="text" class="form-control" id="level"
+                           min="0" max="100" ng-model="knowledge.level" required/>
+                    <span class="alert-danger" ng-repeat="msg in knowledge.errors.level">
+                        {{ msg }}
+                    </span>
+                </td>
+                <td style="width: 140px">
+                    <div class="block">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary"
+                                    ng-click="CharKnowCtrl.update($index)">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                            </button>
+                            <button type="button" ng-show="knowledge.isRequestSent" class="btn btn-default"
+                                    ng-click="CharKnowCtrl.resetKnowledge($index)">
+                                <span class="glyphicon glyphicon-refresh"></span>
+                            </button>
+                        </div>
+                    </div>
+            <span class="alert-success" ng-show="knowledge.status">
+                {{ knowledge.message }}
+            </span>
+            <span class="alert-danger" ng-show="!knowledge.status">
+                {{ knowledge.message }}
+            </span>
+                </td>
+
             </tr>
         </table>
     </div>

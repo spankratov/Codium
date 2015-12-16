@@ -1,16 +1,39 @@
 (function () {
     'use strict';
 
+    var update = function (obj, resource, params, data) {
+        resource.update(params, data,
+            function (response) {
+                obj.isRequestSent = true;
+                var result = JSON.parse(angular.toJson(response));
+                if (response.$status >= 500) {
+                    obj.status = false;
+                    obj.message = "Ошибка на сервере";
+                } else if (response.$status >= 400) {
+                    obj.status = false;
+                    obj.errors = result;
+                    obj.message = "Изменения не сохранены.";
+                } else if (response.$status >= 200) {
+                    obj.status = true;
+                    obj.message = "Изменения сохранены";
+                    delete obj.errors;
+                }
+            });
+    };
+
     angular.module('application.universities.controllers')
         .controller('UniversitiesController', function (Universities, $window) {
             var vm = this;
-            vm.universities = Universities.query();
+            Universities.query(function (response) {
+                vm.universities = JSON.parse(angular.toJson(response));
+            });
 
             vm.new = {};
 
             vm.saveUniversity = function () {
-                var university = Universities.save(vm.new);
-                $window.location = '/universities';
+                Universities.save(vm.new, function (response) {
+                    vm.universities.push(JSON.parse(angular.toJson(response)));
+                });
             };
 
             vm.deleteUniversity = function (index) {
@@ -19,16 +42,23 @@
                 Universities.delete({universityId: universityId});
             };
 
-            vm.currentUniversity = null;
+            vm.university = null;
 
             vm.setCurrentUniversity = function (university) {
-                vm.currentUniversity = (JSON.parse(JSON.stringify(university)))
+                vm.university = university;
             };
 
             vm.updateUniversity = function () {
-                Universities.update({universityId: vm.currentUniversity.id}, vm.currentUniversity);
-                $window.location = "/universities"
-            }
+                update(vm.university, Universities, {universityId: vm.university.id}, vm.university);
+            };
+
+            vm.resetUniversity = function () {
+                Universities.get({
+                    universityId: vm.university.id
+                }, function (response) {
+                    vm.university = JSON.parse(angular.toJson(response));
+                })
+            };
         });
     
     angular.module('application.universities.controllers')

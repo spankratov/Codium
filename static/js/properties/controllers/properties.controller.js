@@ -1,16 +1,39 @@
 (function () {
     'use strict';
 
+    var update = function (obj, resource, params, data) {
+        resource.update(params, data,
+            function (response) {
+                obj.isRequestSent = true;
+                var result = JSON.parse(angular.toJson(response));
+                if (response.$status >= 500) {
+                    obj.status = false;
+                    obj.message = "Ошибка на сервере";
+                } else if (response.$status >= 400) {
+                    obj.status = false;
+                    obj.errors = result;
+                    obj.message = "Изменения не сохранены.";
+                } else if (response.$status >= 200) {
+                    obj.status = true;
+                    obj.message = "Изменения сохранены";
+                    delete obj.errors;
+                }
+            });
+    };
+
     angular.module('application.properties.controllers')
         .controller('PropertiesController', function (Properties, $window) {
             var vm = this;
-            vm.properties = Properties.query();
+            Properties.query(function (response) {
+                vm.properties = JSON.parse(angular.toJson(response));
+            });
 
             vm.new = {};
 
             vm.saveProperty = function () {
-                var property = Properties.save(vm.new);
-                $window.location = '/properties';
+                Properties.save(vm.new, function (response) {
+                    vm.properties.push(JSON.parse(angular.toJson(response)));
+                });
             };
 
             vm.deleteProperty = function (index) {
@@ -19,16 +42,23 @@
                 Properties.delete({propertyId: propertyId});
             };
 
-            vm.currentProperty = null;
+            vm.property = null;
 
             vm.setCurrentProperty = function (property) {
-                vm.currentProperty = (JSON.parse(JSON.stringify(property)))
+                vm.property = property;
             };
 
             vm.updateProperty = function () {
-                Properties.update({propertyId: vm.currentProperty.id}, vm.currentProperty);
-                $window.location = "/properties"
-            }
+                update(vm.property, Properties, {propertyId: vm.property.id}, vm.property);
+            };
+
+            vm.resetProperty = function () {
+                Properties.get({
+                    propertyId: vm.property.id
+                }, function (response) {
+                    vm.property = JSON.parse(angular.toJson(response));
+                })
+            };
         });
 
     angular.module('application.properties.controllers')

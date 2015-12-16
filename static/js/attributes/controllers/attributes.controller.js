@@ -1,16 +1,39 @@
 (function () {
     'use strict';
 
+    var update = function (obj, resource, params, data) {
+        resource.update(params, data,
+            function (response) {
+                obj.isRequestSent = true;
+                var result = JSON.parse(angular.toJson(response));
+                if (response.$status >= 500) {
+                    obj.status = false;
+                    obj.message = "Ошибка на сервере";
+                } else if (response.$status >= 400) {
+                    obj.status = false;
+                    obj.errors = result;
+                    obj.message = "Изменения не сохранены.";
+                } else if (response.$status >= 200) {
+                    obj.status = true;
+                    obj.message = "Изменения сохранены";
+                    delete obj.errors;
+                }
+            });
+    };
+
     angular.module('application.attributes.controllers')
         .controller('AttributesController', function (Attributes, $window) {
             var vm = this;
-            vm.attributes = Attributes.query();
+            Attributes.query(function (response) {
+                vm.attributes = JSON.parse(angular.toJson(response));
+            });
 
             vm.new = {};
 
             vm.saveAttribute = function () {
-                var attribute = Attributes.save(vm.new);
-                $window.location = '/attributes';
+                Attributes.save(vm.new, function (response) {
+                    vm.attributes.push(JSON.parse(angular.toJson(response)));
+                });
             };
 
             vm.deleteAttribute = function (index) {
@@ -19,16 +42,23 @@
                 Attributes.delete({attributeId: attributeId});
             };
 
-            vm.currentAttribute = null;
+            vm.attribute = null;
 
             vm.setCurrentAttribute = function (attribute) {
-                vm.currentAttribute = (JSON.parse(JSON.stringify(attribute)))
+                vm.attribute = attribute;
             };
 
             vm.updateAttribute = function () {
-                Attributes.update({attributeId: vm.currentAttribute.id}, vm.currentAttribute);
-                $window.location = "/attributes"
-            }
+                update(vm.attribute, Attributes, {attributeId: vm.attribute.id}, vm.attribute);
+            };
+
+            vm.resetAttribute = function () {
+                Attributes.get({
+                    attributeId: vm.attribute.id
+                }, function (response) {
+                    vm.attribute = JSON.parse(angular.toJson(response));
+                })
+            };
         });
 
     angular.module('application.attributes.controllers')

@@ -1,16 +1,39 @@
 (function () {
     'use strict';
 
+    var update = function (obj, resource, params, data) {
+        resource.update(params, data,
+            function (response) {
+                obj.isRequestSent = true;
+                var result = JSON.parse(angular.toJson(response));
+                if (response.$status >= 500) {
+                    obj.status = false;
+                    obj.message = "Ошибка на сервере";
+                } else if (response.$status >= 400) {
+                    obj.status = false;
+                    obj.errors = result;
+                    obj.message = "Изменения не сохранены.";
+                } else if (response.$status >= 200) {
+                    obj.status = true;
+                    obj.message = "Изменения сохранены";
+                    delete obj.errors;
+                }
+            });
+    };
+
     angular.module('application.projects.controllers')
         .controller('ProjectsController', function (Projects, $window) {
             var vm = this;
-            vm.projects = Projects.query();
+            Projects.query(function (response) {
+                vm.projects = JSON.parse(angular.toJson(response));
+            });
 
             vm.new = {};
 
             vm.saveProject = function () {
-                var project = Projects.save(vm.new);
-                $window.location = '/projects';
+                Projects.save(vm.new, function (response) {
+                    vm.projects.push(JSON.parse(angular.toJson(response)));
+                });
             };
 
             vm.deleteProject = function (index) {
@@ -19,16 +42,23 @@
                 Projects.delete({projectId: projectId});
             };
 
-            vm.currentProject = null;
+            vm.project = null;
 
             vm.setCurrentProject = function (project) {
-                vm.currentProject = (JSON.parse(JSON.stringify(project)))
+                vm.project = project;
             };
 
             vm.updateProject = function () {
-                Projects.update({projectId: vm.currentProject.id}, vm.currentProject);
-                $window.location = "/projects"
-            }
+                update(vm.project, Projects, {projectId: vm.project.id}, vm.project);
+            };
+
+            vm.resetProject = function () {
+                Projects.get({
+                    projectId: vm.project.id
+                }, function (response) {
+                    vm.project = JSON.parse(angular.toJson(response));
+                })
+            };
         });
 
     angular.module('application.projects.controllers')

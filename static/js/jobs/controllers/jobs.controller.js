@@ -1,16 +1,39 @@
 (function () {
     'use strict';
 
+    var update = function (obj, resource, params, data) {
+        resource.update(params, data,
+            function (response) {
+                obj.isRequestSent = true;
+                var result = JSON.parse(angular.toJson(response));
+                if (response.$status >= 500) {
+                    obj.status = false;
+                    obj.message = "Ошибка на сервере";
+                } else if (response.$status >= 400) {
+                    obj.status = false;
+                    obj.errors = result;
+                    obj.message = "Изменения не сохранены.";
+                } else if (response.$status >= 200) {
+                    obj.status = true;
+                    obj.message = "Изменения сохранены";
+                    delete obj.errors;
+                }
+            });
+    };
+
     angular.module('application.jobs.controllers')
         .controller('JobsController', function (Jobs, $window) {
             var vm = this;
-            vm.jobs = Jobs.query();
+            Jobs.query(function (response) {
+                vm.jobs = JSON.parse(angular.toJson(response));
+            });
 
             vm.new = {};
 
             vm.saveJob = function () {
-                var job = Jobs.save(vm.new);
-                $window.location = '/jobs';
+                Jobs.save(vm.new, function (response) {
+                    vm.jobs.push(JSON.parse(angular.toJson(response)));
+                });
             };
 
             vm.deleteJob = function (index) {
@@ -19,16 +42,23 @@
                 Jobs.delete({jobId: jobId});
             };
 
-            vm.currentJob = null;
+            vm.job = null;
 
             vm.setCurrentJob = function (job) {
-                vm.currentJob = (JSON.parse(JSON.stringify(job)))
+                vm.job = job;
             };
 
             vm.updateJob = function () {
-                Jobs.update({jobId: vm.currentJob.id}, vm.currentJob);
-                $window.location = "/jobs"
-            }
+                update(vm.job, Jobs, {jobId: vm.job.id}, vm.job);
+            };
+
+            vm.resetJob = function () {
+                Jobs.get({
+                    jobId: vm.job.id
+                }, function (response) {
+                    vm.job = JSON.parse(angular.toJson(response));
+                })
+            };
         });
 
 

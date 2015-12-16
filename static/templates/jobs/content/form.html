@@ -7,6 +7,9 @@
         <div class="col-sm-9">
             <input type="text" class="form-control" id="name" placeholder="Name" ng-model="vm.currentJob.name" required
                    value="name">
+            <span class="alert-danger" ng-repeat="msg in vm.job.errors.name">
+                {{ msg }}
+            </span>
         </div>
     </div>
     <div class="form-group">
@@ -15,6 +18,9 @@
         <div class="col-sm-9">
             <textarea id="description" class="form-control" rows="3" ng-model="vm.currentJob.description" required
                       placeholder="description"></textarea>
+            <span class="alert-danger" ng-repeat="msg in vm.job.errors.description">
+                {{ msg }}
+            </span>
         </div>
     </div>
     <div class="form-group">
@@ -23,6 +29,9 @@
         <div class="col-sm-9">
             <input type="text" class="form-control" id="company_name" placeholder="Company name" ng-model="vm.currentJob.company_name" required
                    value="company_name">
+            <span class="alert-danger" ng-repeat="msg in vm.job.errors.company_name">
+                {{ msg }}
+            </span>
         </div>
     </div>
     <div class="form-group">
@@ -31,6 +40,9 @@
         <div class="col-sm-9">
             <input type="text" class="form-control" id="short_name" placeholder="Short name"
                    ng-model="vm.currentJob.short_name" required value="short name">
+            <span class="alert-danger" ng-repeat="msg in vm.job.errors.short_name">
+                {{ msg }}
+            </span>
         </div>
     </div>
     <div class="form-group">
@@ -40,6 +52,9 @@
             <input type="text" class="form-control" id="affects" placeholder="Affects" ng-model="vm.currentJob.affects"
                    required
                    value="affects">
+            <span class="alert-danger" ng-repeat="msg in vm.job.errors.affects">
+                {{ msg }}
+            </span>
         </div>
     </div>
     <div class="form-group">
@@ -48,11 +63,27 @@
         <div class="col-sm-9">
             <input type="text" class="form-control" id="requirements" placeholder="Requirements"
                    ng-model="vm.currentJob.requirements" required value="requirements">
+            <span class="alert-danger" ng-repeat="msg in vm.job.errors.requirements">
+                {{ msg }}
+            </span>
         </div>
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-4">
-            <button type="submit" class="btn btn-default">Сохранить</button>
-        </div>
+                <div class="col-sm-offset-3 col-sm-3">
+                    <button type="submit" class="btn btn-block btn-primary">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                    <span class="alert-success text-center" ng-show="vm.job.status">
+                        {{ vm.job.message }}
+                    </span>
+                    <span class="alert-danger text-center" ng-show="!vm.job.status">
+                        {{ vm.job.message }}
+                    </span>
+                </div>
+                <div class="col-sm-3" ng-show="vm.job.isRequestSent">
+                    <button type="button" class="btn btn-block btn-default" ng-click="vm.resetJob()">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                </div>
     </div>
 </form>

@@ -118,10 +118,7 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = User(
-            email=validated_data['email'],
-            username=validated_data['username']
-        )
+        user = User(email=validated_data['email'], username=validated_data['username'])
         user.set_password(validated_data['password'])
         user.save()
         return user
@@ -168,8 +165,8 @@ class CharacterPropertiesSerializer(serializers.ModelSerializer):
             'character_id', 'property', 'id', 'name', 'description', 'type', 'short_name', 'cost', 'purchase_date')
         validators = [
             validators.UniqueTogetherValidator(
-                queryset=CharacterProperties.objects.all(),
-                fields=('character', 'property')
+                    queryset=CharacterProperties.objects.all(),
+                    fields=('character', 'property')
             )
         ]
 
@@ -195,8 +192,8 @@ class CharacterUniversitiesSerializer(serializers.ModelSerializer):
             'entering_date', 'finished')
         validators = [
             validators.UniqueTogetherValidator(
-                queryset=CharacterUniversities.objects.all(),
-                fields=('character', 'university')
+                    queryset=CharacterUniversities.objects.all(),
+                    fields=('character', 'university')
             )
         ]
 
@@ -224,8 +221,8 @@ class CharacterProjectsSerializer(serializers.ModelSerializer):
             'time_spending', 'taking_date', 'finished')
         validators = [
             validators.UniqueTogetherValidator(
-                queryset=CharacterProjects.objects.all(),
-                fields=('character', 'project')
+                    queryset=CharacterProjects.objects.all(),
+                    fields=('character', 'project')
             )
         ]
 
@@ -252,8 +249,8 @@ class CharacterJobsSerializer(serializers.ModelSerializer):
             'taking_date', 'finished')
         validators = [
             validators.UniqueTogetherValidator(
-                queryset=CharacterJobs.objects.all(),
-                fields=('character', 'job')
+                    queryset=CharacterJobs.objects.all(),
+                    fields=('character', 'job')
             )
         ]
 

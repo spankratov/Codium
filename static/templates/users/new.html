@@ -1,6 +1,68 @@
-<div class="input-group">
-    <input type="text" class="form-control" ng-model="vm.new.username" placeholder="username">
-      <span class="input-group-btn">
-        <button class="btn btn-primary" type="button" ng-click="vm.saveUser()">Создать</button>
-      </span>
-</div><!-- /input-group -->
+<div class="panel panel-primary">
+    <div class="panel-heading">Создание нового User</div>
+    <div class="panel-body">
+        <form class="form-horizontal" role="form" ng-submit="vm.addUser()">
+            <div class="form-group">
+                <label for="username" class="col-sm-4 control-label">Username</label>
+
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" ng-model="vm.newUser.username" required name="username"
+                           id="username" placeholder="Username">
+                        <span ng-repeat="error_message in vm.newUser.errors.username"
+                              class="alert-danger">
+                            {{ error_message }}
+                        </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="password">Email</label>
+
+                <div class="col-sm-8">
+                    <input required type="email" class="form-control"
+                           id="password" placeholder="Email"
+                           ng-model="vm.newUser.email">
+                        <span ng-repeat="error_message in vm.newUser.errors.email"
+                              class="alert-danger">
+                            {{ error_message }}
+                        </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-4 control-label" for="password">Password</label>
+
+                <div class="col-sm-8">
+                    <input required type="text" class="form-control"
+                           id="password" placeholder="Password"
+                           ng-model="vm.newUser.password">
+                        <span ng-repeat="error_message in vm.newUser.errors.password"
+                              class="alert-danger">
+                            {{ error_message }}
+                        </span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-6">
+                        <span class="alert-success" ng-if="vm.newUser.status">
+                            {{ vm.newUser.message }}
+                        </span>
+                        <span class="alert-danger" ng-if="!vm.newUser.status">
+                            {{ vm.newUser.message }}
+                        </span>
+                </div>
+                <div class="col-sm-6">
+                    <button type="submit" class="btn btn-block btn-success">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                    </button>
+                    <button type="button" class="btn btn-block btn-default"
+                            ng-show="vm.newUser.isRequestSent"
+                            ng-click="vm.resetNewUser()">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -42,7 +41,6 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'admin_panel',
     'content',
-    'sync',
     'userdata',
 )
 

@@ -1,7 +1,5 @@
-from django.contrib.auth.models import User
 from content.models import *
 from userdata.models import *
-import userdata.signals
 
 
 def load_test_data(output):

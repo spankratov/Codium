@@ -13,11 +13,14 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include, url, handler404
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    url(r'^api/v1/', include('admin_panel.urls')),
+    url(r'^api/v1/', include('content.urls')),
+    url(r'^api/v1/', include('userdata.urls')),
+    url(r'^api/v1/auth/login/?$', 'rest_framework_jwt.views.obtain_jwt_token'),
+    url(r'^api/v1/', handler404),
     url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^.*$', TemplateView.as_view(template_name='index.html')),
 ]

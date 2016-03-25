@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'hvad',
     'rest_framework',
     'rest_framework_swagger',
-    'admin_panel',
     'content',
     'userdata',
 )
